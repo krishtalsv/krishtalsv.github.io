@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Glaz SKW</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3.0, minimum-scale=0.86">
+<style>
+body { margin: 1px; padding:0px; border: 0px solid red;background-color: #ddd;}
+canvas,img
+{
+  border: 0px solid;
+  margin: 0px ;
+  padding:0px;
+ /* background-color: #f00;*/
+  /*border:solid 1px;*/
+}
+canvas
+{
+  margin-right: -3px ;
+}
+#ci {
+
+ display: inline;
+ 
+ /*float: left;*/
+}
+ 
+
+#canvas_info span { 
+display:inline-block; /* чтобы все спаны реагировали на width */
+}
+/* #ctx_size { color: gray; } */
+
+</style>
+</head>
+
+<body onresize="wm_size()">
+
+<script>
+
+// Neffos Y 480x854
+ 
+// LIB COLOR
+function limit(v){ if(v<0) return 0; if(v>255) return 255; return v;}
+function copy( d, s ) { for( var i = 0; i < s.length; i++ )  d[i] = s[i]; }
+function set( a, v, size ) { for( var i = 0; i < size; i++ ) a[i] = v; }
+function setBW( d, v, size ) { var j=0; for( var i = 0; i < size; i++) { d[j] = v;d[j+1]=v;d[j+2]=v;d[j+3]=255; j+=4; }}
+function fromBW( d, s, size) { var j=0; for( var i = 0; i < size; i++) { var Y = s[i]; d[j] = Y; d[j+1] = Y; d[j+2] = Y; d[j+3]=255; j+=4; }}
+function getzoommed( d, s, z, x0, y0 ) 
+{ 
+ var j = 0;
+  for( var y = 0; y < h; y++)
+  {
+    var ys = Math.floor(y0+y/z)*w;
+    for( var x = 0; x < w; x++) 
+    { 
+     var i = Math.floor(ys+(x0+x/z))*4;
+     d[j] = s[i]; d[j+1] = s[i+1]; d[j+2] = s[i+2]; d[j+3]=s[i+3]; j+=4;
+    }  
+  }
+} 
+var pow2=[];
+function Y( d, i )
+ { i=i*4;
+   var r=d[i]; var g=d[i+1]; var b=d[i+2];
+   var Y = Math.sqrt( 0.29*r*r + 0.57*g*g + 0.14*b*b);
+   return Math.trunc(Y+0.5);
+ }
+ 
+function sY( d )
+{ var r=0, g=0, b=0; 
+  for( var i = 0; i < d.length; i += 4) 
+  {
+    r+=pow2[d[i]]; g+=pow2[d[i+1]]; b+=pow2[d[i+2]];
+  }
+ var v = Math.sqrt( (0.29*r + 0.57*g + 0.14*b) /(d.length/4));
+ return Math.trunc(v+0.5);
+ }
+
+function getrect(d,x,y,dx,dy)
+ {
+   return d.getImageData( x, y, dx, dy );
+ }
+ 
+function toBW( s, d ){ for( var i = 0; i < size; i++ ) d[i] = Y( s, i ); }
+// LIB END
+
+var w; var h; var size;
+// COLOR
+var s; // source pixels (color)
+var d; // calculated pixels
+var sData; var dData; var vData;  
+// BW
+var o = []; // original bw pixels
+var p = []; // calculated bw pixels
+
+// MARKER
+var m = [];
+function mcount(){  var n=0; for( var i = 0; i < size; i++ ) if(m[i] != 0) n++; return n;}
+
+var M =[[0,0,0],[255,255,255],[255,0,0],[0,255,0],[0,0,255],[255,255,0]];
+var Malpha = 128;
+var viewMarker = true;
+function Marker(){ viewMarker= !viewMarker; view();}
+
+var viewOriginal = false;
+function Original( el ){ viewOriginal=!viewOriginal;  el.innerHTML=viewOriginal?"Calc":"Orig"; view();}
+var bg = 0;
+var bgcolor=[0,255,127];
+function background( el ){ bg++; if(bg>4)bg=0; view();}
+
+var diff = false;
+function Diff( el ){ diff=!diff;  view();}
+
+// ZOOM //
+var z, vx0,vy0,vw,vh,vxc,vyc; 
+function zoomset( x, y, v )
+{
+ //console.log("zoom "+v+" "+x+","+y);
+ if(v<1) v=1; if(v>3) v=Math.trunc(v+0.5);
+ if(x<0) x=0; if(y<0) y=0;
+ if((x+w/v)>=w) x=w-w/v; if((y+h/v)>=h) y=h-h/v;
+ z = v; vx0 = x; vy0 = y;
+ vw = w/v; vh = h/v;
+ vxc =vx0+vw/2; vyc = vy0 + vh/2;
+}
+
+function zoomoffset( x, y )
+{
+ zoomset( x, y, z );
+ view();
+}
+function zoompoint( x, y, v )
+{ 
+ // var x1 = x - (x-vx0)*z/v; var vy1 = y - (y-vy0)*z/v;
+ zoomset( vx0, vy0, v );
+ zoomoffset(x-vw/2,y-vh/2);
+}
+
+function zoomin() { zoompoint(vxc,vyc,(z/4)>1?z+z/4:z+1);}
+function zoomout(){ zoompoint(vxc,vyc,(z/4)>1?z-z/4:z-1);}
+/// end ZOOM
+/// JS
+function rgb( d, j ){ return d[j]*65536 + d[j+1]*256 + d[j+2];}
+function srgb( v ){ return "#" + v.toString(16);}
+
+///
+var viewY;
+var progress = 0;
+function calc()
+{
+ set( m, 0, size); // reset markers
+ mid(); //calc
+}
+
+var painting = false;
+var update = 0;
+function paint()
+{
+//while( update > 0 )
+{
+ update = 0;
+ var start = new Date();
+ if( diff )
+  {
+    var j=0; for( var i = 0; i < size; i++ ) { var v = limit(127+ (p[i]-o[i])*vx);d[j] = v;d[j+1]=v;d[j+2]=v;d[j+3]=255; j+=4; } 
+  } 
+ else
+ {
+ if( bg == 0 ) //bw
+     fromBW( d, viewOriginal ? o : p, size ); else
+ if( bg == 1 ) copy( d, sData.data );
+ if( bg > 1 ) //blank bg
+    { viewMarker=true; setBW( d, bgcolor[bg-2], size); }
+}
+
+//ctx.putImageData( dData, 0, 0 );
+if( viewMarker ) { for( var i = 0; i < size; i++)  { var v=m[i]-1;  if( v < 0 ) continue; var j=i*4; d[j]=M[v][0]; d[j+1]=M[v][1];d[j+2]=M[v][2];d[j+3]=Malpha; } }
+
+// if(update) continue;
+
+var v = vData.data;
+var j = 0;
+
+for( var y = 0; y < h; y++ )
+ {
+   var xs = Math.trunc(vy0+y/z)*w + vx0;
+   for( var x = 0; x < w; x++) 
+   { 
+    var i = Math.trunc(xs+x/z)*4;
+    v[j] = d[i]; v[j+1] = d[i+1]; v[j+2] = d[i+2]; v[j+3]=d[i+3];
+    j+=4;
+   }  
+ }
+ var end = new Date();
+ viewY = sY( v ); // яркость
+ // выводим
+ ctx.putImageData( vData, 0, 0 );
+ 
+ // накладки на выведенный canvas
+ var yoffs = Math.trunc(vy0) - vy0; var xoffs = Math.trunc(vx0) - vx0;
+ var yd = Math.trunc(vy0); 
+ 
+ for( var y = yoffs*z; y < h; y+=z)
+  {
+  // какой точке соответствует этот квадрат
+   var xd = Math.trunc(vx0);
+   var i = yd*w+xd;
+  for( var x = xoffs*z; x <= w; x+=z) 
+  { 
+    var vc;
+
+    if( z > 8 )
+    {
+    // var zi = y*zw+x;
+ // var zc = rgb( zd, zi );
+ // ctx.fillStyle = srgb(zc);
+     //ctx.strokeRect( xcell, ycell, z, z);
+    }
+  
+  if( z>=14 )
+  {
+   ctx.font = (z<=16)?"8px Arial":(z<=20)?"9px Arial":"10px Arial";//ctx.textAlign;//ctx.textAlign = "center";
+  // точка в видимом canvas
+  // console.log( (ycell*w+xcell)*4);
+  var text; 
+  if( diff )  text=(p[i]-o[i]).toString(); else
+  if( bg == 0 ) text = viewOriginal ? o[i].toString() : p[i].toString(); else
+  if( bg == 1 ) text = "?\n?"; else
+  text = "";
+  var xt = Math.trunc(x+3); var yt = Math.trunc(y+z-3);
+  var xx = xt; if(xx<0) xx=0; if(xx>=w) xx=w-1; var yy = yt; if(yy<0)yy=0; if(yy>=h) yy=h-1; 
+  var Ycel = Y( v, yy*w+xx);
+  
+ // ctx.fillStyle = "#f00";
+ // ctx.fillRect( xx, yy, 2, 2);
+  
+  ctx.fillStyle = Ycel >= 127 ?"#000":"#ddd";
+  ctx.fillText( text, x+3, y+z-3 );
+    }
+   xd++; i++;
+  }
+yd++;
+}
+
+ console.log( "dt=" + (end - start)+" " +z );
+}
+
+painting = false;
+// info
+document.getElementById('bY').innerHTML = viewY.toString();
+document.getElementById('progress').value = progress; document.getElementById('_progress_').innerHTML = Math.floor(progress);
+document.getElementById('vx').value = vx;
+document.getElementById('zoom_v').innerHTML = Math.trunc(z*10)/10;
+}
+
+function view()
+{
+ paint(); return; // sync paint
+ update++;
+ if( painting ) { 
+ console.log("paint skip " + update); 
+ return; }
+ painting = true;
+ var proc = setTimeout( function() { paint() }, 10 );
+}
+ 
+function redraw()
+ { 
+  if( src == null ) return;
+  // alert( srcw + " " + w + " " + ctx);
+  //get source colors pixels
+  ctx.drawImage( src, 0, 0, srcw, srch, 0, 0, w, h );
+  sData = ctx.getImageData( 0, 0, w, h );
+  s = sData.data;
+  dData = ctx.createImageData( w, h );
+  d = dData.data;
+  vData = ctx.createImageData( w, h );
+  
+  toBW( s, o ); // !!! нужно чтобы ф
+  copy( p, o );
+  
+  calc();
+  view();
+}
+
+var vx = 1; var vy = 1;
+function cvx( v ){ vx+=v; calc(); view();}
+
+function dif( )
+{
+  for (var y = 1; y < h-1; y++) 
+  for (var x = 1; x < w-1; x++) 
+  {
+   var i = (y*h + x)*4; d[i] = 127- (d[i]-d[i+4]); i++; d[i] = 127- (d[i]-d[i+4]); i++; d[i] = 127- (d[i]-d[i+4]);
+  }
+}
+
+function mid()
+{ //
+for (var y = 1; y < h-1; y++) 
+for (var x = 1; x < w-1; x++) 
+  {
+    var i = (y*w + x);
+    p[i]=o[i];
+    //if(p[i-1]==p[i]) { m[i]=4; continue;}
+     //if( Math.abs(p[i-1]-p[i]) <= 2 && Math.abs(p[i]-p[i+1]) <= 2 ) m[i]=4;
+    // if( p[i-1]<=p[i] && p[i]<=p[i+1]) m[i]=1;
+     //if( p[i-1]>=p[i] && p[i]>=p[i+1]) m[i]=2;
+     
+    //p[i]=o[i];
+    var v = o[i]; var v1 = o[i-1]; var v2= o[i+1];
+    //by x
+    var mid = (v1 + v2)/2;
+    var dif = v2-v1;if( dif < 0) dif=-dif; 
+    var dm = v-mid; if(dm<0) dm =-dm;
+    var j = Math.abs(v-v1) < Math.abs( v-v2 ) ? -1:1;
+    var inx = (dm<=dif/2);
+    if( inx ) 
+     {
+       var midx = dm <= (dif/6);
+       var vn = Math.floor(mid);//o[i+j];
+       if( midx )
+       if( p[i]!=vn )
+       { 
+         p[i] = vn; 
+         m[i] = 3; 
+        //if(dif>3) m[i]=1;     
+       }
+     } 
+     else //out x
+     {
+     var out = dm - dif/2; if (out <0) out =-outx;
+     if( out>0 && out <= vx ){ 
+   //  p[i]=o[i+j];
+    // m[i]=3;
+     }
+    }
+    //else xc++;//m[i] = 1;
+     //by x
+     var v1 = o[i-w]; var v2= o[i+w];
+     dif = v1 - v2;if( dif < 0) dif=-dif;
+     mid = (v1 + v2)/2;
+     dm = v-mid; if(dm<0) dm =-dm;
+     j = Math.abs( v-v1) < Math.abs(v-v2) ? -w:w;  
+     var iny = ( dm<=dif/2 );  
+     if( iny ) 
+     {
+      var midy = dm <= (dif/6);
+      var vn = Math.floor(mid);//o[i+j];
+      if(midy)
+     if( p[i]!=vn )
+     { 
+      p[i] = vn; 
+      m[i] = 4;
+      //if(dif>3) m[i]=1;      
+     }
+     }
+     else //out y
+     {
+     var out = dm - dif/2; if (out <0) out =-out; 
+     if( out >0 && out <= vx){
+     //p[i]=o[i+j]; 
+    // m[i]=4;
+     }
+     //p[i]=o[i];
+     }
+     ///if(!insidey && !insidex  ) m[i]=3;
+ }
+ progress = (100*mcount())/(w*h);
+ 
+}
+
+function change1()
+{
+  for (var i = 0; i < d.length; i += 4) 
+  {
+      var v = 255 * Math.random();
+      v = Math.floor(v);
+     // v = v >= 127? 255:0;
+       //d[i] = 255 - d[i]; d[i+1] = 255 - d[i+1];d[i+2] = 255 - d[i+2];
+      d[i] = v; d[i+1] = v;d[i+2] = v;
+       ///b[i+3] = 100;
+   } 
+}
+
+// TOUCH //
+var tch = []; var prevDiff=-1;
+var tz; var tvxc; var tvyc; var tvx; var tvy;
+function tcopy(t) { return { id: t.identifier, x: t.pageX, y: t.pageY ,x1:t.pageX, y1:t.pageY, dx:0,dy:0};}
+function gettch(id){ for (var i=0; i < tch.length; i++) if(tch[i].id == id ) return i; return -1;}
+
+function touchstart( evt ) {
+ evt.preventDefault(); var t = evt.changedTouches;
+ for ( var i = 0; i < t.length; i++)
+  {
+    tch.push(tcopy(t[i]));  
+    if(tch.length==1) {tz = z; tvx = vx0; tvy = vy0; tvxc = vxc; tvyc = vyc;}
+  }
+ }
+ 
+function touchmove( evt ) { 
+ evt.preventDefault(); 
+ var t = evt.changedTouches; 
+
+ for (var i=0; i < t.length; i++)
+ {
+   var j = gettch( t[i].identifier ); if(j<0) continue;
+   tch[j].dx = tch[j].x1 - t[i].pageX; tch[j].dy =tch[j].y1 - t[i].pageY;
+   tch[j].x1 = t[i].pageX; tch[j].y1 = t[i].pageY;
+ }
+ if( tch.length == 1 )
+ {
+  var dx = (tch[0].x-tch[0].x1)/z;  var dy=(tch[0].y -tch[0].y1)/z;
+  //console.log( z + " "+ dx + " "+ dy); 
+  zoomoffset( tvx+dx, tvy+dy );
+  return;
+ }
+ if( tch.length == 2 )// If two pointers are down, check for pinch gestures
+ {
+  // console.log( tch[0].x + " "+ tch[0].x1+" " +tch[1].x+" " +tch[1].x1);
+  var dx = tch[0].x - tch[1].x;
+  var dy = tch[0].y - tch[1].y;
+  var dx1 = tch[0].x1 - tch[1].x1;
+  var dy1 = tch[0].y1 - tch[1].y1;
+  
+  var l = Math.sqrt( dx*dx + dy*dy);
+  var l1 = Math.sqrt( dx1*dx1 + dy1*dy1);
+  var zoom = Math.trunc(tz*l1/l*10)/10;
+  
+  // calc offset
+  //console.log( l + " "+ l1 +" " +tz*l1/l );
+  zoompoint(tvxc,tvyc,zoom);
+  }
+ }
+ 
+function touchend(evt) { evt.preventDefault(); 
+var t = evt.changedTouches; 
+
+//for (var i=0; i<t.length; i++) { var j = gettch( t[i].identifier );if(j>=0)tch.splice(j,1); }
+//if(tch.length==1) {tz = z; tvx = vx; tvy = vy; tvxc = vxc; tvyc = vyc;}
+tch.splice(0,tch.length)
+}
+function touchcancel(evt) { evt.preventDefault(); touchmove(evt); touchend(evt) }
+// END TOUCH //
+
+function image_mousemove(ev){
+  return;
+  var el = e.currentTarget;
+ // alert("ff "+e.offsetX);
+  ev.offsetX ? offsetX = ev.offsetX : offsetX = ev.touches[0].pageX
+  ev.offsetY ? offsetY = ev.offsetY : offsetX = ev.touches[0].pageX
+}
+
+var canvas_view_full = false;
+function resize( src_new )
+ {
+  if( canvas==null ) return;
+  var ww = document.documentElement.clientWidth; 
+  var wh = document.documentElement.clientHeight;
+  var wprev = w; var hprev = h; var bb = 4;
+  if ( src==null )return false;
+  if (canvas_view_full){ w = ww; h = (srch * w)/srcw; } else
+  {
+    if( ww > wh ) // dev horz
+    {    
+      w = (ww-bb)/2; h = (srch * w)/srcw; 
+    }
+    else // dev vert
+    { 
+     if ( srcw > srch ) //source horz
+     { w = ww-bb; h = (srch * w)/srcw;} else  
+     { w = (ww-bb)/2; h = (srch * w)/srcw;}
+    }
+  }
+  
+  w = Math.floor(w); h = Math.floor(h);
+  if( wprev==w && hprev==h) return false;
+  
+  canvas.width = w; canvas.height = h; size = w*h;
+  img.width = w; img.height = h;
+  
+  if( src_new ) zoomset(1,0,0);
+  else{ zoompoint(w*vxc/wprev,h*vyc/hprev,z);}
+  
+  document.getElementById('ctx_size').innerHTML = w + "x"+h;
+  window.scrollTo(0,0);
+  return true;
+ }
+
+function img_click( ev, el )
+{
+ var rc = el.getBoundingClientRect();
+ var x = ev.pageX - rc.left; var y = ev.pageY - rc.top;
+ //console.log("pick "+x+","+y);
+ if( z > 1){ zoompoint(x,y,z); return; }
+ if( x > 2*el.width/3) image_next(1);
+ if( x < el.width/3) image_next(-1);
+}
+
+function canvas_dblclick( )
+{
+alert();
+  if( z > 1 ) zoomset(1,0,0);
+  else
+     canvas_view_full = !canvas_view_full;
+  resize( false );
+  redraw();
+}
+function canvas_click( )
+{
+return;
+  canvas_view_full = !canvas_view_full;
+  resize( false );
+  redraw();
+}
+function wm_size() 
+{
+ // alert("wm_size");
+ if( resize( false ) ) redraw();
+}
+
+var src; var srcw, srch;
+function src_set( el_image )
+{
+ src = el_image; srcw = el_image.naturalWidth; srch = el_image.naturalHeight;
+ image.width = window.innerWidth;
+ document.getElementById('image_inf').innerHTML=srcw+"x"+srch;
+ resize( true );
+ redraw();
+}
+
+var files = ["IMG_20190203_104051","IMG_20170811_172108","IMG_20180526_112708","IMG_20180509_143731","IMG_20190104_180759","5x1UP","IMG_20171203_135656","IMG_20181111_230939","IMG_20181227_150012","IMG_20171203_132608"];
+var file = 3; 
+function image_next( step ){ file+=step; if( file < 0 ) file = files.length -1; if (file >files.length -1) file = 0; image_file( files[file] );}
+function image_file( filename ){ image.src = '../DCIM/Camera/' + filename + '.jpg'; img.src = image.src; }
+function image_input( input )
+{
+  if (input.files && input.files[0])
+   {
+    var reader = new FileReader();
+    reader.onload = function (e) { image.src = e.target.result; img.src = e.target.result; };
+    reader.readAsDataURL(input.files[0]);
+   }
+}
+/*
+function download( data, filename, type ) {
+ var file = new Blob([data], {type: type});
+ var a = document.createElement("a"),
+ url = URL.createObjectURL(file);
+ a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
+}
+*/
+function image_click( ){ image.width = (image.width != window.innerWidth ) ? window.innerWidth : image.naturalWidth;}
+
+var canvas; var ctx; 
+var img; var image;
+
+function init()
+{
+ canvas = document.getElementById('hdc'); 
+ ctx = canvas.getContext('2d');
+ ctx.imageSmoothingEnabled = false;ctx.mozImageSmoothingEnabled = false;ctx.webkitImageSmoothingEnabled = false;ctx.msImageSmoothingEnabled = false;
+ canvas.addEventListener("touchstart", touchstart, false );
+ canvas.addEventListener("touchmove", touchmove, false);
+ canvas.addEventListener("touchend", touchend, false );
+ canvas.addEventListener("touchcancel", touchcancel, false);
+ img = document.getElementById('img');
+ image = document.getElementById('image');
+ 
+ //for( var i=0; i<files.length; i++ ){document.getElementById('files').innerHTML+="<option>"+files[i]+"</option>";}
+ image_file(files[file]);
+ for( var i = 0; i<256; i++) pow2[i]=i*i;
+ //setInterval( fupdate, 300);
+}
+
+</script>
+
+<div id="ci">
+<canvas id="hdc" width=68 ondblclick="canvas_dblclick()"></canvas>
+<img id="img" width=68 onclick="img_click(event, this)" src="dummy" alt="img">
+</div>
+<p id="canvas_info">
+ <span id="bY" style="width:32px;" >256</span><progress id="progress" max="100" value="0" style="width:64px"></progress><span id="_progress_" style="width:32px;">100</span>
+ <button onclick="Marker();">Mark</button>
+ <button onclick="Original(this);">Orign</button>
+ <span id="ctx_size" style="margin-left:10px;"></span>
+</p>
+<div id ="tool">
+<button onclick="background(this);">Back</button>
+<button onclick="Diff(this);">Dif</button>
+<button onclick="cvx(-1);">-</button>
+<input id="vx" style="width:24px;">
+<button onclick="cvx(+1)">+</button>
+<button onclick="zoomout()">-</button>
+<span id="zoom_v">1</span>
+<button onclick="zoomin()">+</button>
+</div>
+<p>
+<button onclick='image_next(-1)'>&lt;</button>
+<input id="inputfile" type ="file" onchange="image_input( this )" style="display:none;" />
+<input type="button" value="Browse..." onclick="document.getElementById('inputfile').click();" />
+<button onclick='image_next(1)' >></button>
+<span id="image_inf"></span>
+</p>
+<img id="image" src="dummy"  onload="src_set(this)" onmousemove="image_mousemove(event)" onclick="image_click(this)" alt="image" >
+
+<script> init(); </script>
+</body>
+</html>
