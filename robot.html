@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <title>ROBOT</title>  
@@ -30,11 +31,11 @@ function log(string){ console.log(string);}
 const M=70;
 const H=170;//высота человека
 const Rhead = 10;// радиус головы
-const LL=H; //длина ноги
+const LL=H*2/3; //длина ноги
 const LK=LL/2; 
 const Fmg = -M*9.8;//g=9.8//10;
-const TGy = 200; //цель
-  
+var Tgx = 200; var Tgy = 200; //цель смотрим на цель и рытаемя ее достичь
+ var Ex,Ey;// запасенная энергия 
 class Head {
   //координата головы
   // Method
@@ -87,6 +88,7 @@ class Leg {
       
     //  log(x0);log(x);
       this.koly=(y0+y)/2+dkol*this.cos;
+      if(this.koly<2)this.koly=2;
       this.kolx=(x0+x)/2-dkol*this.sin;
     //  this.kolx=x0+dkol;///
     //  log(dkol);
@@ -123,7 +125,7 @@ var t=0; const dt=0.1;
 function reset()
 { 
   head.xy(20,170); head.vx=0; head.vy=0;
-  leg.xy(head.x,head.y,head.x-10,head.y-LL);//координата опорной ноги  
+  leg.xy(head.x,head.y-H/2,head.x-10,head.y-H);//координата опорной ноги  
   leg.k=0;  
 }
     
@@ -132,7 +134,7 @@ function run()
     if(t > 20) return;
     //t=t+dt; return;
     
-    leg.xy(head.x, head.y, leg.x, leg.y);   
+    leg.xy(head.x, head.y-H/2, leg.x, leg.y);   
     Fxsum = 0; Fysum = Fmg; //
    
   if(leg.opora)
@@ -173,7 +175,7 @@ function click(){  stop = true;alert("click");}
 function fs(v,prec){return Math.round(v)+"."+Math.round((v-v/1000)*10);}
 
 var inf;//inf.innerHTML = w+"x"+h;  
-var o,lr,ll,ll1,ll2,lr1,lr2; //рисунок
+var o,lr,ll,ll1,ll2,lr1,lr2,body; //рисунок
 var Y00; //уровень земли
 function draw()
   {
@@ -182,7 +184,8 @@ function draw()
   //  ll.setAttribute("x1",leg.x0);ll.setAttribute("y1",leg.y0); ll.setAttribute("x2",leg.x); ll.setAttribute("y2",leg.y);
     ll1.setAttribute("x1",leg.x0);ll1.setAttribute("y1",leg.y0); ll1.setAttribute("x2",leg.kolx); ll1.setAttribute("y2",leg.koly);
     ll2.setAttribute("x1",leg.kolx);ll2.setAttribute("y1",leg.koly); ll2.setAttribute("x2",leg.x); ll2.setAttribute("y2",leg.y);
-     
+ body.setAttribute("x1",head.x);body.setAttribute("y1",head.y); body.setAttribute("x2",leg.x0); body.setAttribute("y2",leg.y0);
+    
     inf.innerHTML="Y="+Math.round(head.y)
                  +" t="+Math.round(t)+"."+Math.round((t-t/1000)*10)
                  +"vY="+head.vy
@@ -201,6 +204,7 @@ function init()
     lr2 = document.getElementById("lr2");
    ll1 = document.getElementById("ll1");
     ll2 = document.getElementById("ll2");
+    body = document.getElementById("body");
     
      Y00=document.getElementById("earth").getAttribute("y1");
  inf = document.getElementById("inf")//
@@ -209,8 +213,8 @@ function init()
   setInterval( main, 300 ); //
  }
 </script>
- <div>ver 1.0</div>  
-<svg width="340" height="340" viewPort="0 0 720 720" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
+ <div>skw(c) ver 1.0 </div>  
+<svg width="100%" height="340" viewPort="0 0 340 340" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
  <!-- поворачиваем ось у -->
  <g transform="matrix(1 0 0 -1 0 340)">
    
@@ -222,6 +226,7 @@ function init()
 <line id="ll2" x1="1" y1="0" x2="2" y2="3" style="stroke:red;stroke-width:4" />
 <line id="lr1" x1="1" y1="0" x2="2" y2="3" style="stroke:red;stroke-width:4" />
 <line id="lr2" x1="1" y1="0" x2="2" y2="3" style="stroke:red;stroke-width:4" />
+<line id="body" x1="1" y1="0" x2="2" y2="3" style="stroke:green;stroke-width:6" />
 
 <circle id="head" cx="20" cy="25" r="10" onclick="click();" style=" fill:blue; stroke:yellow;stroke-width:2" />  
 
@@ -263,8 +268,7 @@ function init()
 </svg>
 
   <div id="inf">inf</div>  
-  <img id="logo" src="small.gif" onclick="alert('конечная цель')" alt="robot.gif" >
-
-skw(c) SVG
+  <img id="logo" src="small.gif" onclick="alert('конечная цель')" alt="robot.gif" />
+  
 </body>
 </html>
