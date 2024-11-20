@@ -155,12 +155,13 @@ function run()
   }
   
 var tview=0;  
-function timer()
+async function timer()
   {
      if(t<1) {t+=dt;return;}
     if(stop) return;
     run();
-    if((t-tview)>0.2){ draw(); tview = t;}   
+    if((t-tview)>0.2){ draw(); tview = t;} 
+    await sleep(dt*1000);       
   }
   
 ///////// РИСОВАНИЕ  /////////
@@ -203,7 +204,8 @@ function init()
   reset();
   setInterval( timer, dt ); //
  }
-  
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms));}
+//use as: await sleep(1000ms);
 </script>
 
 <svg width="device-width" height="device-width" viewPort="0 0 340 340" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
