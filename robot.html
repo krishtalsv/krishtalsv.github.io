@@ -155,13 +155,14 @@ function run()
   }
   
 var tview=0;  
-async function timer()
+async function main()
   {
-     if(t<1) {t+=dt;return;}
+     //if(t<1) {t+=dt;return;}
     if(stop) return;
     run();
-    if((t-tview)>0.2){ draw(); tview = t;} 
-    await sleep(dt*1000);       
+    draw();   
+    //if((t-tview)>0.2){ draw(); tview = t;} 
+        
   }
   
 ///////// РИСОВАНИЕ  /////////
@@ -202,7 +203,7 @@ function init()
  inf = document.getElementById("inf")//
  ///
   reset();
-  setInterval( timer, dt ); //
+  setInterval( main, dt*20 ); //
  }
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms));}
 //use as: await sleep(1000ms);
@@ -261,7 +262,7 @@ function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms));}
 </svg>
 
   <div id="inf">inf</div>  
-  <img id="logo" src="small.gif" onclick="alert("конечная цель")" alt="robot.gif" >
+  <img id="logo" src="small.gif" onclick="alert('конечная цель')" alt="robot.gif" >
 
 skw(c) SVG
 </body>
