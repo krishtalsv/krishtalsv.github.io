@@ -1,7 +1,6 @@
 <html>
 <head>
 <title>ROBOT</title>  
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3.0, minimum-scale=0.86">  
 <style>
 svg *
 {
@@ -115,7 +114,7 @@ var step; //текущая длина шага от головы до опоры
 var Fysum, Fxsum;
 
 var stop=false;
-var t=0; var dt=0.1;
+var t=0; const dt=0.1;
    
 function reset()
 { 
@@ -155,7 +154,7 @@ function run()
   }
   
 var tview=0;  
-async function main()
+function main()
   {
      //if(t<1) {t+=dt;return;}
     if(stop) return;
@@ -203,13 +202,11 @@ function init()
  inf = document.getElementById("inf")//
  ///
   reset();
-  setInterval( main, dt*20 ); //
+  setInterval( main, 1000 ); //
  }
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms));}
-//use as: await sleep(1000ms);
 </script>
 
-<svg width="device-width" height="device-width" viewPort="0 0 340 340" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
+<svg width="340" height="340" viewPort="0 0 720 720" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
  <!-- поворачиваем ось у -->
  <g transform="matrix(1 0 0 -1 0 340)">
    
