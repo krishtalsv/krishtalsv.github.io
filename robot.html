@@ -26,7 +26,7 @@ svg text
 <body onload ="init()">
   
 <script type="text/javascript">
-function log(string){ console.log(string);} 
+function log(string){ return; console.log(string);} 
 
 const M=70;
 const H=170;//высота человека
@@ -188,8 +188,8 @@ function draw()
     
     inf.innerHTML="Y="+Math.round(head.y)
                  +" t="+Math.round(t)+"."+Math.round((t-t/1000)*10)
-                 +"vY="+head.vy
-                 + "Fxsum="+Fxsum + "Fysum "+Fysum
+                 +" vY="+Math.round(head.vy)
+                 + " Fsum="+Math.round(Fxsum) + ":"+Math.round(Fysum)
     ;
   }
   
@@ -214,8 +214,7 @@ function init()
  }
 </script>
  <div>skw(c) ver 1.0 </div>  
- <div width="100%">
-<svg width="340" height="340" viewPort="0 0 340 340" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
+<svg width="100%" height="100%" viewPort="0 0 340 340" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
  <!-- поворачиваем ось у -->
  <g transform="matrix(1 0 0 -1 0 340)">
    
@@ -267,7 +266,7 @@ function init()
  -->
   </g>
 </svg>
-</div> 
+
   <div id="inf">inf</div>  
   <img id="logo" src="small.gif" onclick="alert('конечная цель')" alt="robot.gif" />
   
