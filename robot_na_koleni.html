@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
-<!--робот присяд на колени -->
 <head>
-<title>ROBOT</title>  
+<title>ROBOT skw</title>  
 <style>
 
 body {
@@ -27,16 +26,19 @@ svg text
 <body onload ="init()">
   
 <script type="text/javascript">
-function log(string){ console.log(string);} 
+function log(string){ return; console.log(string);} 
 
 const M=70;
 const H=170;//высота человека
 const Rhead = 10;// радиус головы
-const LL=H*2/3; //длина ноги
+const LL=(H*5)/9; //длина ноги
 const LK=LL/2; 
+const LB=H-LL; //длина тела 
+  
 const Fmg = -M*9.8;//g=9.8//10;
 var Tgx = 200; var Tgy = 200; //цель смотрим на цель и рытаемя ее достичь
- var Ex,Ey;// запасенная энергия 
+var Ex,Ey;// запасенная энергия ногой 
+
 class Head {
   //координата головы
   // Method
@@ -53,6 +55,9 @@ class Head {
     this.xy(this.x,this.y);
   }
 }
+class Robot
+  {
+  }
   
 class Leg {
    // геометрия ноги костей
@@ -122,20 +127,19 @@ var Fysum, Fxsum;
 
 var stop=false;
 var t=0; const dt=0.1;
-   
+var handle; 
+
 function reset()
 { 
   head.xy(20,170); head.vx=0; head.vy=0;
-  leg.xy(head.x,head.y-H/2,head.x-10,head.y-H);//координата опорной ноги  
+  leg.xy(head.x,head.y-LB,head.x-10,head.y-LB-LL);// 
   leg.k=0;  
 }
     
 function run()
   {
-    if(t > 20) return;
-    //t=t+dt; return;
     
-    leg.xy(head.x, head.y-H/2, leg.x, leg.y);   
+    leg.xy(head.x, head.y-LB, leg.x, leg.y);   
     Fxsum = 0; Fysum = Fmg; //
    
   if(leg.opora)
@@ -164,6 +168,12 @@ var tview=0;
 function main()
   {
      //if(t<1) {t+=dt;return;}
+    if(t > 20) {
+    //return;
+    //t=t+dt; return;
+      clearInterval(handle);
+      handle = 0; 
+    }
     if(stop) return;
     run();
     draw();   
@@ -189,8 +199,8 @@ function draw()
     
     inf.innerHTML="Y="+Math.round(head.y)
                  +" t="+Math.round(t)+"."+Math.round((t-t/1000)*10)
-                 +"vY="+head.vy
-                 + "Fxsum="+Fxsum + "Fysum "+Fysum
+                 +" vY="+Math.round(head.vy)
+                 + " Fsum="+Math.round(Fxsum) + ":"+Math.round(Fysum)
     ;
   }
   
@@ -211,8 +221,9 @@ function init()
  inf = document.getElementById("inf")//
  ///
   reset();
-  setInterval( main, 300 ); //
+  handle = setInterval( main, 300 ); //
  }
+  
 </script>
  <div>skw(c) ver 1.0 </div>  
 <svg width="100%" height="100%" viewPort="0 0 340 340" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
