@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>skw index</title>    
+ 
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />  
+<title>skw index</title> 
 <style>
 body
 {
@@ -12,12 +17,46 @@ body
   /*stroke:black;*/
   font: 18pt sans-serif; 
   /*fill:none;*/
+  height:400px;
+ // height:device-height;
+ // border: 4px #0ff solid;
 }
-   
+  
+#a1 
+{
+ //background:#fffff0;
+ height:20%;
+}
+#a2
+{
+ width:40%;
+ background:#f00;
+ float:left; /*элемент отвязывается и плавает вверх и влево*/
+ height:70%;
+}
+#a3 
+{
+ width:60%;
+/* background:#0f0;*/
+ float:left;
+ height:70%;
+}
+#a4
+{
+ width:100%;
+ background:#f0f;
+ height:10%;
+ clear:both;/*элемент 'видит' плавающие элементы */
+}  
 </style>
 </head>
 
 <body>
+ <div id="a1">header</div>
+ <div id="a2">Содержимое левой колонки</div>
+ <div id="a3">Текст области контента</div>
+ <div id="a4">footer</div>
+  
   <p><a href="robot.html">РОБОТ<img src="small.gif" alt="Робот"></a></p>
   <p><a href="robot_01_tolchek.html">толчек</a></p>
   <p><a href="robot_na_koleni.html">на колени</a></p>
