@@ -1,160 +1,270 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ROBOT</title>  
+<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+<!-- чтобы страница не кэшировалась браузером -->  
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />  
+<!-- для смартфонов -->    
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>ROBOT skw</title>  
 <style>
 
-body {
-  font face:"Courier";  
+body { 
+  //font face:"Courier"; 
+  font: 12pt sans-serif;  
 }
-svg *
-{
-  stroke-width:0;
-  stroke:black;
-  /*fill:none;*/
-  border:solid 1px;
-}
-svg text
-{
-  font: 18pt sans-serif; 
-  stroke-width:1; /* обрамление символа*/
-}
-    
+  
+  /*stroke-width:0;*/
+  /*stroke:black;*/
+  
 </style>
 </head>
 
 <body onload ="init()">
   
 <script type="text/javascript">
-function log(string){ return; console.log(string);} 
-
+function log(str){ console.log(str);} 
+ //геометрия 
 const M=70;
 const H=170;//высота человека
-const Rhead = 10;// радиус головы
-const LL=H*2/3; //длина ноги
+const HeadR = 10;// радиус головы
+const LB=(H*4)/9; //длина тела   
+const LL=H-LB; //длина ноги
 const LK=LL/2; 
-const Fmg = -M*9.8;//g=9.8//10;
-var Tgx = 200; var Tgy = 200; //цель смотрим на цель и рытаемя ее достичь
-var Ex,Ey;// запасенная энергия 
-class Head {
-  //координата головы
-  // Method
-  xy(x,y)
-  { 
-    if(y<=Rhead){y=Rhead;this.vy=0;this.vx=0}
-    this.y=y;this.x=x;
-  }
-  calc(Fx, Fy) {
-    this.vx+=Fx*dt/M;//F=mdV/dt dV=F*dt/m   
-    this.x+=this.vx*dt;    
-    this.vy+=Fy*dt/M;//F=mdV/dt dV=F*dt/m   
-    this.y+=this.vy*dt;
-    this.xy(this.x,this.y);
-  }
+const Rkol= 5;// радиус колнки  
+//энергия  
+const Fmg = -M*9.8*5;//g=9.8//10;
+var Fsumy, Fsumx;
+
+var Tgx = 000; var Tgy = 300; //цель смотрим на цель и рытаемя ее достичь
+var Etx,Ety;// энергия до цели
+const TVIEW=15;
+function xy(obj,x,y){ if(y < 0)y=0; obj.x=x;obj.y=y; }      
+
+function Fma( o, Fx,Fy )
+  {
+    var xp=o.x; var yp=o.y; // запоминаем
+  
+    o.vx+=Fx*dt/M;//F=mdV/dt dV=F*dt/m   
+    o.vy+=Fy*dt/M;//F=mdV/dt dV=F*dt/m   
+    o.x+=o.vx*dt;  o.y+=o.vy*dt;
+
+      //проверяем на границы
+    // console.log(Fy+" "+o.y+" "+yp);
+ 
+    o.xy(o.x,o.y);
+ 
+      //корректируем
+    o.vx=(o.x-xp)/dt; o.vy=(o.y-yp)/dt;
 }
   
-class Leg {
-   // геометрия ноги костей
-  xy(x0,y0,x,y)
-  { 
-    if(x0<0)x0=0; if(x<0)x=0;  
-    if(y<=0)y=0; if(y0<0) y0=0;
-     this.x0=x0; this.y0=y0;
-     this.x=x; this.y=y;
-    var dx=(x-x0); 
-    var dy=(y-y0);
-    //фактическая длина ноги
-     var l=Math.sqrt(dx*dx+dy*dy);
-     
-     if(l>LL){  
-       l=LL;//длина ноги
-       dy= Math.sqrt(LL*LL-dx*dx);
-       this.y=this.y0-dy; y=this.y;
-     }
-     
-     this.l=l;
-     log(" l"+l+" dx"+dx+" dy"+dy);   
-     this.cos=dx/l;//step/l     
-     this.sin=dy/l; // 
-     //подсчитываем колено  
-     this.koly=(y0+y)/2;
-    // if(LL>l)
-    {
-      //this.kolx=dx/2; 
-     } //else
-    {
-      //см.хорда
-      var dkol=Math.sqrt(LK*LK-(l/2)*(l/2));
-      
-    //  log(x0);log(x);
-      this.koly=(y0+y)/2+dkol*this.cos;
-      if(this.koly<2)this.koly=2;
-      this.kolx=(x0+x)/2-dkol*this.sin;
-    //  this.kolx=x0+dkol;///
-    //  log(dkol);
-     // log(this.kolx);
-    }
-   // log(this.kolx);
-    if(this.y<=1) this.opora = true; else this.opora = false;
+class Head {
+ xy(x,y){ xy(this,x,y); };
+}
+class CM { //центр масс
+  //координата 
+  xy(x,y){ this.x=x; if(y<3)y=3; this.y=y; };
+  Fma(Fx,Fy){ Fma(this,Fx,Fy); };
+}  
   
-      //мышцы
-    if(this.opora==true)
-      {
-        log("opora "+ leg.x+ " "+ leg.y+" k"+this.k+"cos"+this.cos+" sin"+this.sin);
+class Men
+  { 
+    opora(){
+      if(legl.opora) 
+         this.opora = true; else this.opora = false;
+    }
+    xy(){//координаты частей тела
+      head.xy(cm.x,cm.y+LB);
+     // legl.state(legl.l,legl.cos);
+     legl.xy();
+    }
+    Fma(Fsumx,Fsumy)
+       {
+         cm.Fma(Fsumx,Fsumy); 
+       }
+    calcE(){//энергия человека
+      legl.calcE();
+      this.Ex=legl.Ex;
+      this.Ey=legl.Ey;
+      this.Ex+=cm.vx*cm.vx*M; //кинет.движение
+      this.Ey+=cm.vy*cm.vy*M;
+    }
 
-        this.F=this.k;
-        this.Fx=this.F*this.cos;
-        this.Fy=this.F*this.sin; 
-      }     
-      else   { 
-        log("opora false y=" + y);
-        this.F=0;  this.Fx=0; this.Fy=0;
-      }        
+    Etarget(x,y)
+    {
+      //двигаемся к цели 
+      Etx = Math.round(x-head.x);
+      Ety = Math.round(y-head.y);
+      // цель уменьшить это до нуля
+      // 
+    }
+    
+    target(x,y)
+    {
+      //нужно удержаться от быстрого изменения положения вниз
+      if(cm.y<LL) if(legl.opora) legl.signal((LL-cm.y)*50);
+      return ;
+      //
+      this.Etarget(x,y);
+      this.calcE();
+      console.log("Ety="+r(Ety) + " m.Ey="+r(this.Ey));
+   //   if(this.Ex<Etx)
+  //       legl.signal(-10); //накапливаем энергию
+ //     else
+//         legl.signal(100);//прыгаем        
+     if(this.Ey<Ety)
+         legl.signal((this.Ey-Ety)); //накапливаем энергию
+      else
+         if(legl.opora)
+       legl.signal((this.Ey-Ety));//прыгаем  
+   if(this.Ex<Etx)  
+      if(legl.l<LL)     
+       cm.x+=(Etx-this.Ex)/10;//наклоняемся     
+    }
+  }
+class Kol
+  {
+  }  
+  
+class Leg {
+  // !! напряжение мышц и сгибание ног это разные
+  // процессы - напрягать мышцы я могу и без разгибания ног
+  range(l){
+    if(l>LL) l=LL; if(l<0) l=3; return l; //0не ставим
+  }
+  state(l,cos)
+  {
+    l = this.range(l);
+    // геометрия костей ноги
+    this.l=l;
+    if(cos>1) cos=1;
+    this.cos=cos; 
+    this.sin=Math.sqrt(1-cos*cos);  
+    this.xy();      
+  }
+  
+  xy( )
+  {
+    var x0=cm.x; var y0=cm.y;
+    var sin = this.sin; var cos = this.cos;
+       // положение ноги в координатах
+     //см.хорда
+    var l = this.l;
+    var d = Math.sqrt(LK*LK-(l/2)*(l/2));
+    console.log("x0y0="+r(x0)+":"+r(y0)+ " d=" +r(d)+" sin,cos="+sin +":"+ cos );
+   
+    //кость до колена
+    var x = d*cos + (-l/2)*sin;
+    var y = -d*sin + (-l/2)*cos;
+    x = x0+x; y = y0+y;
+    if(y<0) y=0; //стукнулись коленом
+    this.kolx = x; this.koly = y;
+      
+    //подсчитываем кость до стопы
+    x =  -l*sin;
+    y =  -l*cos;
+   
+  //  console.log("l="+ Math.round(l)+" d="+ Math.round(d) +" koly"+Math.round(this.koly));
+    this.dkol=d;
+    this.x0 = x0; this.y0 = y0;
+    x=x+x0; 
+    y=y+y0; if(y<0)y=0;
+    if(y==0)  this.opora = true; else this.opora = false;
+    this.x = x;
+    this.y = y;
+  }
+  
+  signal( k ) // сигнал мышцам
+  {
+    this.k+=k;
+   // this.state(this.l+this.k,this.cos);
+    return;
+    //мышцы
+   // if(this.opora==false)
+    {
+       var lp = this.l;
+      
+       this.len(this.l+this.k/10);
+       console.log( "signal lp=" +lp +" l="+this.l+" k=" + k);
+      
+       this.xy();
+       console.log( "signal1 lp=" +lp +" l="+this.l+" k=" + k);
+     
+       this.k=0;
+    }
+  }  
+
+  calcF()
+  { 
+     var F=this.k;
+    //мышцы
+     this.Fx=F*this.sin;
+     this.Fy=F*this.cos; 
+    /*
+     if(this.x==this.x0 && this.l==LL)
+      {
+        console.log("прямые ноги l="+this.l);
+        this.Fx=0; this.Fy=-Fmg;//держимся на выпрямлленной вертикально ноге на жесткости костей    
+      }
+    */
+       // console.log("opora "+ legl.x+ " "+ legl.y+" k"+this.k+"cos"+this.cos+" sin"+this.sin);
+  }
+  calcE()
+  { 
+     //запасенная кинетическая энергия согнутая нога-ге зпвисит от опоры
+      var E= (LL-this.l)*(LL-this.l)*5;//длина*сахар
+      this.Ex=Math.round(E*this.sin);
+      this.Ey=Math.round(E*this.cos);      
   }
 }
 
 const head = new Head();
-const leg  = new Leg();
-
-var step; //текущая длина шага от головы до опоры
-var Fysum, Fxsum;
+const legl  = new Leg();
+const men = new Men();
+const cm = new CM();  
 
 var stop=false;
 var t=0; const dt=0.1;
-   
+var handle; 
+
 function reset()
 { 
-  head.xy(20,170); head.vx=0; head.vy=0;
-  leg.xy(head.x,head.y-H/2,head.x-10,head.y-H);//координата опорной ноги  
-  leg.k=0;  
+  head.xy(0,170); head.vx=0; head.vy=0;
+  cm.xy(0,head.y-LB); cm.vx=0; cm.vy=0;
+  legl.state(LL,cm.y/LL); legl.k=0;  
+  t=0;
 }
     
 function run()
   {
-    if(t > 20) return;
-    //t=t+dt; return;
-    
-    leg.xy(head.x, head.y-H/2, leg.x, leg.y);   
-    Fxsum = 0; Fysum = Fmg; //
+    //legl.len(Math.sqrt(cm.x*cm.x+cm.y*cm.y));
+   // legl.xy(head.x, head.y-LB, head.x/legl.l,(head.y-LB)/legl.l);
+    //
+    //t+=2;
+  // return;
+    Fsumx = 0; Fsumy = Fmg; //
+    legl.calcF();
+    //силу меняем только если есть опора
+    if(legl.opora){  Fsumx += legl.Fx;  Fsumy += legl.Fy;}//   
+    console.log("Fmg="+ Fmg+" Fsum="+ r(Fsumx)+":"+ r(Fsumy)+" leglF="+ r(legl.Fx)+":" +r(legl.Fy));   
    
-  if(leg.opora)
-    {     
-     log("run opora "+ leg.x+ " "+ leg.y+" Fx"+leg.Fx+" Fy"+leg.Fy+" Fmg" + Fmg);
-     Fysum += leg.Fy;//
-     Fxsum += leg.Fx;//  
-     leg.k=(head.y - H)*30; // пытаемся поддержать голову          
-      }
- else
-   {
-    //опоры нет  
-     leg.k = 10;// готовимся к приземлению
-      
-      //head.y-=5; //встаем
-     //head.vx=10;//head.vx=-10;//наклонились и пошли
-   }
-   //
-    head.calc(Fxsum,Fysum); 
-   // leg.xy(head.x, head.y, leg.x, leg.y);   
+    men.Fma(Fsumx,Fsumy); 
+    
+    if(legl.opora){
+       var l = legl.range(Math.sqrt(cm.y*cm.y+(legl.x-cm.x)*(legl.x-cm.x)));
+     // legl.state(l,legl.cos);
+    //  l=legl.l;
+      var cos =(cm.y)/l;
+      //console.log(" ±±+++"+cos);
+      legl.state( l,cos);
+    }
+    
+    men.xy();
+    
+    men.target(Tgx,Tgy);
     
     t+=dt;
   }
@@ -163,41 +273,53 @@ var tview=0;
 function main()
   {
      //if(t<1) {t+=dt;return;}
+    if(t > TVIEW) {
+    //return;
+    //t=t+dt; return;
+      clearInterval(handle);
+      handle = 0; 
+    }
     if(stop) return;
     run();
-    draw();   
-    //if((t-tview)>0.2){ draw(); tview = t;} 
-        
+    draw(); //if((t-tview)>0.2){ draw(); tview = t;}    
   }
   
 ///////// РИСОВАНИЕ  /////////
-function click(){  stop = true;alert("click");}
-function fs(v,prec){return Math.round(v)+"."+Math.round((v-v/1000)*10);}
+function r(v){return Math.round(v);}
 
-var inf;//inf.innerHTML = w+"x"+h;  
-var o,lr,ll,ll1,ll2,lr1,lr2,body; //рисунок
+var inf,inf1;//inf.innerHTML = w+"x"+h;  
+var popa,h,lr,ll,ll1,ll2,lr1,lr2,body; //рисунок
 var Y00; //уровень земли
 function draw()
   {
-    o.setAttribute("cx",head.x);o.setAttribute("cy",head.y); 
-  //  lr.setAttribute("x1",leg.x0);lr.setAttribute("y1",leg.y0); lr.setAttribute("x2",leg.x); lr.setAttribute("y2",leg.y);
-  //  ll.setAttribute("x1",leg.x0);ll.setAttribute("y1",leg.y0); ll.setAttribute("x2",leg.x); ll.setAttribute("y2",leg.y);
-    ll1.setAttribute("x1",leg.x0);ll1.setAttribute("y1",leg.y0); ll1.setAttribute("x2",leg.kolx); ll1.setAttribute("y2",leg.koly);
-    ll2.setAttribute("x1",leg.kolx);ll2.setAttribute("y1",leg.koly); ll2.setAttribute("x2",leg.x); ll2.setAttribute("y2",leg.y);
- body.setAttribute("x1",head.x);body.setAttribute("y1",head.y); body.setAttribute("x2",leg.x0); body.setAttribute("y2",leg.y0);
+    popa.setAttribute("cx",cm.x);popa.setAttribute("cy",cm.y); 
+  //  h.setAttribute("cx",head.x);h.setAttribute("cy",head.y); 
+  //  lr.setAttribute("x1",legl.x0);lr.setAttribute("y1",legl.y0); lr.setAttribute("x2",legl.x); lr.setAttribute("y2",legl.y);
+  //  ll.setAttribute("x1",legl.x0);ll.setAttribute("y1",legl.y0); ll.setAttribute("x2",legl.x); ll.setAttribute("y2",legl.y);
+    ll1.setAttribute("x1",legl.x0);ll1.setAttribute("y1",legl.y0); ll1.setAttribute("x2",legl.kolx); ll1.setAttribute("y2",legl.koly+Rkol);
+    ll2.setAttribute("x1",legl.kolx);ll2.setAttribute("y1",legl.koly+Rkol); ll2.setAttribute("x2",legl.x); ll2.setAttribute("y2",legl.y);
+   // body.setAttribute("x1",head.x);body.setAttribute("y1",head.y); body.setAttribute("x2",legl.x0); body.setAttribute("y2",legl.y0);
     
-    inf.innerHTML="Y="+Math.round(head.y)
-                 +" t="+Math.round(t)+"."+Math.round((t-t/1000)*10)
-                 +" vY="+Math.round(head.vy)
-                 + " Fsum="+Math.round(Fxsum) + ":"+Math.round(Fysum)
+    inf.innerHTML=" t="+Math.floor(t)+"."+Math.floor((t-Math.floor(t))*10)
+                 + " cm="+r(cm.x)+":"+r(cm.y)
+                 + " cmv="+r(cm.vx)+":"+r(cm.vy)
+                 + " Fsum="+r(Fsumx) + ":"+r(Fsumy)
     ;
+    inf1.innerHTML="leg l="+r(legl.l)+" x,y="+r(legl.x0)+","+r(legl.y0)+":"+r(legl.x)+","+r(legl.y)
+                 + " op="+legl.opora
+                 + " k="+r(legl.k)
+                 + " Fxy=" + r(legl.Fx)+":" +r(legl.Fy)
+   + " Exy=" + r(legl.Ex)+":" +r(legl.Ey)
+
+                   ;
   }
   
 //// HTML
 function init()
   {
     //
-    o = document.getElementById("head");   
+    h = document.getElementById("head");   
+    popa = document.getElementById("cm");   
     lr = document.getElementById("legr");  
     ll= document.getElementById("legl");
    lr1 = document.getElementById("lr1");
@@ -208,13 +330,16 @@ function init()
     
      Y00=document.getElementById("earth").getAttribute("y1");
  inf = document.getElementById("inf")//
+ inf1 = document.getElementById("inf1")//
  ///
   reset();
-  setInterval( main, 300 ); //
+  handle = setInterval( main, dt*1000 ); //
  }
+
 </script>
- <div>skw(c) ver 1.0 </div>  
-<svg width="100%" height="100%" viewPort="0 0 340 340" viewBox="0 0 340 340" border="solid 1px;stroke-width:1">
+  
+ <div>skw(c) ver 2.0 </div>  
+ <svg width="100%" height="100%" viewPort="0 0 340 340" viewBox="-10 0 340 340" border="solid 1px;stroke-width:1">
  <!-- поворачиваем ось у -->
  <g transform="matrix(1 0 0 -1 0 340)">
    
@@ -228,7 +353,8 @@ function init()
 <line id="lr2" x1="1" y1="0" x2="2" y2="3" style="stroke:red;stroke-width:4" />
 <line id="body" x1="1" y1="0" x2="2" y2="3" style="stroke:green;stroke-width:6" />
 
-<circle id="head" cx="20" cy="25" r="10" onclick="click();" style=" fill:blue; stroke:yellow;stroke-width:2" />  
+<circle id="head" cx="20" cy="25" r="10" onclick="click();" style=" fill:blue;" />  
+<circle id="cm" cx="10" cy="25" r="5" onclick="click();" style=" fill:red;" />  
 
 <line id= "earth" x1="0" y1="0" x2="340" y2="0" style="stroke:black;stroke-width:3" /> 
 
@@ -268,7 +394,11 @@ function init()
 </svg>
 
   <div id="inf">inf</div>  
-  <img id="logo" src="small.gif" onclick="alert('конечная цель')" alt="robot.gif" />
-  
-</body>
+  <div id="inf1">inf1</div> 
+   <button style="height:42px;" onclick="stop=!stop">START/STOP</button>
+   <button style="height:42px;" onclick="reset()">RESET</button>
+ <!--
+  <div> <img id="logo" src="small.gif" onclick="alert('КОНЕЧНАЯ ЦЕЛЬ :-)')" alt="robot.gif" /> </div>
+ -->
+ </body>
 </html>
