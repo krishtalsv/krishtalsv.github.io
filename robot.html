@@ -8,7 +8,7 @@
 <meta http-equiv="Expires" content="0" />  
 <!-- для смартфонов -->    
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<link rel="stylesheet" href="https://example.com/css/main.css">
 <title>ROBOT skw</title>  
 <style>
 
@@ -31,8 +31,9 @@ function log(str){ console.log(str);}
 const M=70;
 const H=170;//высота человека
 const HeadR = 10;// радиус головы
-const LB=(H*4)/9; //длина тела   
-const LL=H-LB; //длина ноги
+const LL=(H*45)/80; //длина ноги  
+const LB=H-LL; //длина тела   
+
 const LK=LL/2; 
 const Rkol= 5;// радиус колнки  
 //энергия  
@@ -130,8 +131,8 @@ class Kol
   }  
   
 class Leg {
-  // !! напряжение мышц и сгибание ног это разные
-  // процессы - напрягать мышцы я могу и без разгибания ног
+  // !! напряжение мышц и сгибание ног 
+  //это разные процессы - напрягать мышцы я могу и без разгибания ног
   range(l){
     if(l>LL) l=LL; if(l<0) l=3; return l; //0не ставим
   }
@@ -293,12 +294,12 @@ var Y00; //уровень земли
 function draw()
   {
     popa.setAttribute("cx",cm.x);popa.setAttribute("cy",cm.y); 
-  //  h.setAttribute("cx",head.x);h.setAttribute("cy",head.y); 
+    h.setAttribute("cx",head.x);h.setAttribute("cy",head.y); 
   //  lr.setAttribute("x1",legl.x0);lr.setAttribute("y1",legl.y0); lr.setAttribute("x2",legl.x); lr.setAttribute("y2",legl.y);
   //  ll.setAttribute("x1",legl.x0);ll.setAttribute("y1",legl.y0); ll.setAttribute("x2",legl.x); ll.setAttribute("y2",legl.y);
     ll1.setAttribute("x1",legl.x0);ll1.setAttribute("y1",legl.y0); ll1.setAttribute("x2",legl.kolx); ll1.setAttribute("y2",legl.koly+Rkol);
     ll2.setAttribute("x1",legl.kolx);ll2.setAttribute("y1",legl.koly+Rkol); ll2.setAttribute("x2",legl.x); ll2.setAttribute("y2",legl.y);
-   // body.setAttribute("x1",head.x);body.setAttribute("y1",head.y); body.setAttribute("x2",legl.x0); body.setAttribute("y2",legl.y0);
+    body.setAttribute("x1",head.x);body.setAttribute("y1",head.y); body.setAttribute("x2",legl.x0); body.setAttribute("y2",legl.y0);
     
     inf.innerHTML=" t="+Math.floor(t)+"."+Math.floor((t-Math.floor(t))*10)
                  + " cm="+r(cm.x)+":"+r(cm.y)
