@@ -106,8 +106,11 @@ class Men
     target(x,y)
     {
       //нужно удержаться от быстрого изменения положения вниз
-      if(cm.y<LL) if(legl.opora) legl.signal((LL-cm.y)*50);
-      return ;
+      // прыгаем
+      //if(cm.y<LL) if(legl.opora) legl.signaldl(legl.k+(LL-cm.y)*50); // прыгаем
+      //приседаем
+       if(cm.y<LL) if(legl.opora) legl.signaldl((LL-cm.y)*150);///приседаем
+       return;
       //
       this.Etarget(x,y);
       this.calcE();
@@ -177,27 +180,6 @@ class Leg {
     this.x = x;
     this.y = y;
   }
-  
-  signal( k ) // сигнал мышцам
-  {
-    this.k+=k;
-   // this.state(this.l+this.k,this.cos);
-    return;
-    //мышцы
-   // if(this.opora==false)
-    {
-       var lp = this.l;
-      
-       this.len(this.l+this.k/10);
-       console.log( "signal lp=" +lp +" l="+this.l+" k=" + k);
-      
-       this.xy();
-       console.log( "signal1 lp=" +lp +" l="+this.l+" k=" + k);
-     
-       this.k=0;
-    }
-  }  
-
   calcF()
   { 
      var F=this.k;
@@ -211,12 +193,24 @@ class Leg {
         this.Fx=0; this.Fy=-Fmg;//держимся на выпрямлленной вертикально ноге на жесткости костей    
       }
     */
-       // console.log("opora "+ legl.x+ " "+ legl.y+" k"+this.k+"cos"+this.cos+" sin"+this.sin);
-  }
+   }
+  signaldl( k ) // сигнал мышцам согнуть ноги
+  {
+    this.k=k;
+   // this.state(this.l+this.k,this.cos);
+    return;
+  }  
+  signalE( E ) // сигнал мышцам напрячся
+  {
+    this.E+=E;
+    return;
+  }  
+
   calcE()
   { 
      //запасенная кинетическая энергия согнутая нога-ге зпвисит от опоры
-      var E= (LL-this.l)*(LL-this.l)*5;//длина*сахар
+      var E= this.E;
+      //var E= (LL-this.l)*(LL-this.l)*5;//длина*сахар
       this.Ex=Math.round(E*this.sin);
       this.Ey=Math.round(E*this.cos);      
   }
@@ -227,9 +221,8 @@ const legl  = new Leg();
 const men = new Men();
 const cm = new CM();  
 
-var stop=false;
 var t=0; const dt=0.1;
-var handle; 
+var handle=0; 
 
 function reset()
 { 
@@ -237,6 +230,7 @@ function reset()
   cm.xy(0,head.y-LB); cm.vx=0; cm.vy=0;
   legl.state(LL,cm.y/LL); legl.k=0;  
   t=0;
+ // if(handle==0) play();
 }
     
 function run()
@@ -271,20 +265,31 @@ function run()
   }
   
 var tview=0;  
+
 function main()
   {
      //if(t<1) {t+=dt;return;}
     if(t > TVIEW) {
     //return;
     //t=t+dt; return;
-      clearInterval(handle);
-      handle = 0; 
+     play();
     }
-    if(stop) return;
+    //if(stop) return;
     run();
     draw(); //if((t-tview)>0.2){ draw(); tview = t;}    
   }
-  
+  function play()
+  {
+    if(handle==0){
+      log("start");
+      handle = setInterval( main, dt*1000 ); //
+    }
+    else
+      { 
+           log("stop");
+        clearInterval(handle); handle = 0; 
+      }
+    }
 ///////// РИСОВАНИЕ  /////////
 function r(v){return Math.round(v);}
 
@@ -333,8 +338,7 @@ function init()
  inf = document.getElementById("inf")//
  inf1 = document.getElementById("inf1")//
  ///
-  reset();
-  handle = setInterval( main, dt*1000 ); //
+  reset(); play();
  }
 
 </script>
@@ -396,7 +400,7 @@ function init()
 
   <div id="inf">inf</div>  
   <div id="inf1">inf1</div> 
-   <button style="height:42px;" onclick="stop=!stop">START/STOP</button>
+   <button style="height:42px;" onclick="play()">START/STOP</button>
    <button style="height:42px;" onclick="reset()">RESET</button>
  <!--
   <div> <img id="logo" src="small.gif" onclick="alert('КОНЕЧНАЯ ЦЕЛЬ :-)')" alt="robot.gif" /> </div>
