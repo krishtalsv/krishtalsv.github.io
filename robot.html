@@ -8,7 +8,7 @@
 <meta http-equiv="Expires" content="0" />  
 <!-- для смартфонов -->    
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://example.com/css/main.css">
+
 <title>ROBOT skw</title>  
 <style>
 
@@ -154,8 +154,15 @@ class Muscle {
   }
   signaldl( k ) // сигнал мышцам согнуть ноги
   {
-    this.k=k;
-    return;
+    //если мышца растянута
+    if(k>0 && this.l>=this.max) k=0;
+    if(k<0 && this.l<=this.min) k=0;
+      
+    var F=k;
+    //мышцы
+    this.Fx=F*this.sin;
+    this.Fy=F*this.cos; 
+    this.k=k;   
   }  
   
   signalE( E ) // сигнал мышце напрячся
@@ -163,33 +170,9 @@ class Muscle {
     this.E+=E;
     return;
   }  
-  calcF()
-  { 
-     var F=this.k;
-    //мышцы
-     this.Fx=F*this.sin;
-     this.Fy=F*this.cos; 
-   }
-}  
-  
-class Leg extends Muscle {
-  // !! напряжение мышц и сгибание ног 
-  //это разные процессы - напрягать мышцы я могу и без разгибания ног
-  range(l){
-    if(l>LL) l=LL; if(l<0) l=3; return l; //0не ставим
-  }
-  
-  state(l,cos)
-  {
-    l = this.range(l);
-    super.state(l,cos);
-    // геометрия костей ноги
-    this.xy();      
-  }
- 
   calcEk()
   {  
-     //запасенная энергия ноги
+     //запасенная энергия мышцы
       var E= this.E;
     // кинетическая энергия это возможная энергия
     // которую можно преобразовать в скорость
@@ -198,6 +181,18 @@ class Leg extends Muscle {
       E = (LL-this.l)*(LL-this.l)*E;//длина*сахар
       this.Ex=Math.round(E*this.sin);
       this.Ey=Math.round(E*this.cos);      
+  }  
+}  
+  
+class Leg extends Muscle {
+  // !! напряжение мышц и сгибание ног 
+  //это разные процессы - напрягать мышцы я могу и без разгибания ног
+  state(l,cos)
+  {
+    l = this.range(l);
+    super.state(l,cos);
+    // геометрия костей ноги
+    this.xy();      
   }
   
   xy( )
@@ -276,7 +271,8 @@ function reset()
 { 
   head.xy(0,170); head.vx=0; head.vy=0;
   cm.xy(0,head.y-BL); cm.vx=0; cm.vy=0;
-  legl.state(LL,cm.y/LL); legl.k=0;  
+  legl.min=3; legl.max=LL;  
+  legl.state(LL,cm.y/LL);  legl.signaldl(0);
   body.state(BL,1);
   t=0;
  // if(handle==0) play();
@@ -290,9 +286,9 @@ function run()
     //t+=2;
   // return;
     Fsumx = 0; Fsumy = Fmg; //
-    legl.calcF();
+    //legl.calcF();
     //силу меняем только если есть опора
-    if(legl.opora){  Fsumx += legl.Fx;  Fsumy += legl.Fy;}//   
+    if(legl.opora){ Fsumx += legl.Fx;  Fsumy += legl.Fy;}//   
     console.log("Fmg="+ Fmg+" Fsum="+ r(Fsumx)+":"+ r(Fsumy)+" leglF="+ r(legl.Fx)+":" +r(legl.Fy));   
    
     men.Fma(Fsumx,Fsumy); 
