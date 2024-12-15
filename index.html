@@ -1,73 +1,182 @@
 <!DOCTYPE html>
+
 <html>
 <head>
- 
-<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-<title>index.html skw</title> 
-<link rel="icon" href="favicon.ico">
-<!-- для смартфонов --> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- чтобы страница не кэшировалась браузером -->  
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />  
-
-<style>
-body
-{
-  /*stroke-width:0;*/
-  /*stroke:black;*/
-  font: 18pt sans-serif; 
-  /*fill:none;*/
-  height:400px;
- // height:device-height;
- // border: 4px #0ff solid;
-}
-  
-#a1 
-{
- background:#fff0f0;
- height:20%;
-}
-#a2
-{
- width:40%;
- background:#fafff0;
- float:left; /*элемент отвязывается и плавает вверх и влево*/
- height:70%;
-}
-#a3 
-{
- width:60%;
-// background:#f0f0ff;
- float:left;
- height:70%;
-}
-#a4
-{
- width:100%;
- background:#f0faff;
- height:10%;
- clear:both;/*элемент 'видит' плавающие элементы */
-}  
-</style>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>skws.ru</title>
 </head>
 
-<body>
- <div id="a1">header v2.0</div>
- <div id="a2">
-  <p><a href="robot.html">РОБОТ</a></p>
+<style type="text/css">
+body {
+	 /*background: #eee;*/
+ padding: 4px;/*отступ сверху*/
+ margin: 0px;
+}
+.mobile {
+	width: 100%; 
+	/*width: 350px;*/
+	margin: 0 auto;
+	position: relative;
+/*	border: 1px solid #ddd;*/
+	/*background: #fff;*/
+	overflow: hidden;
+}
+header {
+	height: 48px;/*высоьа заголовка*/
+	background: #eee;
+}
+.logo {
+	position: absolute;
+	top: 8px;
+	left: 138px;
+	font-weight: 700;
+	font-size: 28px;
+	/*color: #ff4632; приятный красный */
+ color: #000;/*цвет текста*/
+}
+main {
+	padding: 8px; /* отступ текста слева от края*/
+}
+
+.menu-triger {
+	background: url(menu1.png) 0 0 repeat;
+	display: block;
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	right: 16px;
+	top: 14px;
+}	
+.menu-close {
+	background: url(close1.png) 0 0 repeat;
+	display: block;
+	width: 28px;
+	height: 28px;
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	z-index: 100;
+}
+.menu-popup {
+/*	background: #2c2e3e;*/
+background: #f0f0f0;
+	display: none;
+	position: absolute;
+	right: -110%;
+	top: 8px;
+	width: 250px;
+	box-sizing: border-box;
+	padding: 16px;/*отступ слева текста меню*/
+	z-index: 9999;	
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+.menu-popup ul {
+	margin: 0;
+	padding: 0;
+}
+.menu-popup li {
+	list-style: none;
+	margin: 10px 0;
+	padding: 0;
+}
+.menu-popup li a {
+	font-size: 18px;
+	font-family: "Arial";
+	color: rgb(55, 55, 55);/*цвет пунктов меню*/
+/*color: rgb(255, 255, 255);*/  
+	line-height: 1.4;	
+	text-decoration: none;
+}
+.body_pointer * {
+	cursor: pointer;
+}
+</style>
+
+<div class="mobile">
+	<header>
+		<div class="menu">
+			<a class="menu-triger" href="#"></a>
+			<div class="menu-popup">
+				<a class="menu-close" href="#"></a>
+				<ul>
+					<li><a href="#">О компании</a></li>
+					<li><a href="#">Услуги</a></li>		
+					<li><a href="#">Прайс-лист</a></li>
+							<li><a href="#">Гарантии</a></li>
+					<li><a href="#">Контакты</a></li>
+				</ul>						
+			</div>
+		</div>
+ 		<div class="logo">SKW</div>
+	</header>
+	<main class="content">
+		
+		<a href="robot.html"><img src="robot.jpeg" alt="Робот" ></a>
+ <p><a href="robot.html">РОБОТ</a></p>
   <p><a href="robot_01_tolchek.html">толчек</a></p>
   <p><a href="robot_na_koleni.html">на колени</a></p>
   <p><a href="robot_prigok.html">прыжок</a></p>
-  Содержимое левой колонки
- </div>
- <div id="a3">
-   <a href="robot.html"><img src="small.gif" alt="Робот" ></a>
-   Текст контента
- </div>
- <div id="a4">footer</div>
-  
-  
-</body>
+	  <p>
+	  <p><a href="https://t.me/+86J096W8FspkYmYy">телеграмм</a></p>
+	
+ ниже пока бред
+			<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed suscipit mi non nisl tempus, 
+			pretium ultricies purus aliquet. Nam ex nisl, pellentesque a porttitor at, tincidunt id purus. 
+			Ut euismod ex ut malesuada consectetur.
+		</p>
+		<p>
+			Phasellus eleifend diam a facilisis auctor. Etiam dapibus velit metus, a vulputate erat 
+			condimentum sed. Aliquam porta at diam ut euismod. Mauris ut turpis vehicula, auctor ex 
+	e accumsan, lobortis nunc non, faucibus nulla. Maecenas tincidunt 
+			porttitor dolor quis tempor. Proin pellentesque dui quis arcu eleifend, vel suscipit nisl pretium.
+		</p>
+		<p>
+			Vestibulum vestibulum, ante vitae dapibus semper, lorem erat vehicula augue, euismod rhoncus orci 
+			mauris sit pellentesque molestie faucibus. Donec semper risus id turpis gravida imperdiet.
+		</p>
+	</main>
+</div>
+
+<script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
+<script>
+$(function() {
+	var $menu_popup = $('.menu-popup');
+
+	$(".menu-triger").click(function(){
+		$('body').addClass('body_pointer');		
+		$menu_popup.show(0);
+		$menu_popup.animate(
+			{right: parseInt($menu_popup.css('left'),10) == 0 ? -$menu_popup.outerWidth() : 0}, 
+			300
+		);
+		return false;
+	});	
+	
+	$(".menu-close").click(function(){
+		$('body').removeClass('body_pointer');		
+		$menu_popup.animate(
+			{right: parseInt($menu_popup.css('right'),10) == 0 ? -$menu_popup.outerWidth() : 0}, 
+			300, 
+			function(){
+				$menu_popup.hide(0);
+			}
+		);
+		return false;
+	});	
+	
+	$(document).on('click', function(e){
+		if (!$(e.target).closest('.menu-popup').length){
+			$('body').removeClass('body_pointer');
+			$menu_popup.animate(
+				{right: parseInt($menu_popup.css('right'),10) == 0 ? -$menu_popup.outerWidth() : 0}, 
+				300, 
+				function(){
+					$menu_popup.hide(0);
+				}
+			);
+		}
+	});
+});
+</script>
 </html>
