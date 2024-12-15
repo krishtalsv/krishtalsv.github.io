@@ -15,6 +15,7 @@
 body { 
   //font face:"Courier"; 
   font: 12pt sans-serif;  
+  max-width: 720px;
 }
   
   /*stroke-width:0;*/
@@ -44,7 +45,7 @@ var Tgx = 000; var Tgy = 300; //цель смотрим на цель и рыт�
 var Etx,Ety;// энергия до цели
        
 
-function Fma( o, Fx,Fy )
+function Fma( o, Fx, Fy )
   {
     var xp=o.x; var yp=o.y; // запоминаем
   
@@ -52,13 +53,14 @@ function Fma( o, Fx,Fy )
     o.vy+=Fy*dt/M;//F=mdV/dt dV=F*dt/m   
     o.x+=o.vx*dt;  o.y+=o.vy*dt;
 
-         // console.log(Fy+" "+o.y+" "+yp);
+   // console.log(Fy+" "+o.y+" "+yp);
  
    //проверяем на границы
    o.xy(o.x,o.y);
  
-      //корректируем
+   //корректируем
    o.vx=(o.x-xp)/dt; o.vy=(o.y-yp)/dt;
+   o.dx=(o.x-xp);o.dy=(o.y-yp);
 }
   
 class Head {
@@ -77,13 +79,14 @@ class Men
       if(legl.opora) 
          this.opora = true; else this.opora = false;
     }
-    xy(){//координаты частей тела
-      
+    
+    xy(){//координаты частей тела     
      // legl.state(legl.l,legl.cos);
      legl.xy();
      body.xy();
      head.xy(body.x,body.y);      
     }
+    
     Fma(Fsumx,Fsumy)
        {
          cm.Fma(Fsumx,Fsumy); 
@@ -111,7 +114,9 @@ class Men
       // прыгаем
       //if(cm.y<LL) if(legl.opora) legl.signaldl(legl.k+(LL-cm.y)*50); // прыгаем
       //приседаем
-       if(cm.y<LL) if(legl.opora) legl.signaldl((LL-cm.y)*150);///приседаем
+       if(cm.y<LL) 
+         if(legl.opora) 
+            legl.signaldl((LL-cm.y)*500);///приседаем
        return;
       //
       this.Etarget(x,y);
@@ -131,10 +136,6 @@ class Men
        cm.x+=(Etx-this.Ex)/10;//наклоняемся     
     }
   }
- 
- function range(obj, l){
-    if(l>obj.max) l=obj.max; if(l<obj.min) l=obj.min; return l; //0не ставим
-  }  
 
 class Muscle {
   //мышца
@@ -170,6 +171,7 @@ class Muscle {
     this.E+=E;
     return;
   }  
+  
   calcEk()
   {  
      //запасенная энергия мышцы
@@ -178,7 +180,7 @@ class Muscle {
     // которую можно преобразовать в скорость
     //на расправленных ногах и без опоры ноль
     //нет на расправленных ногах можно энергию гасить если падаем
-      E = (LL-this.l)*(LL-this.l)*E;//длина*сахар
+      E = (this.max-this.l)*(this.max-this.l)*E;//длина*сахар
       this.Ex=Math.round(E*this.sin);
       this.Ey=Math.round(E*this.cos);      
   }  
@@ -198,32 +200,36 @@ class Leg extends Muscle {
   xy( )
   {
     var x0=cm.x; var y0=cm.y;
+    this.x0 = x0; this.y0 = y0;
     var sin = this.sin; var cos = this.cos;
        // положение ноги в координатах
      //см.хорда
     var l = this.l;
-    var d = Math.sqrt(KL*KL-(l/2)*(l/2));
- //   console.log("x0y0="+r(x0)+":"+r(y0)+ " d=" +r(d)+" sin,cos="+sin +":"+ cos );
-   
-    //кость до колена
-    var x = d*cos + (-l/2)*sin;
-    var y = -d*sin + (-l/2)*cos;
-    x = x0+x; y = y0+y;
-    if(y<0) y=0; //стукнулись коленом
-    this.kolx = x; this.koly = y;
-      
+    //матрица поворота
+    //x = d*cos + (-l/2)*sin;
+    //y = -d*sin + (-l/2)*cos;
     //подсчитываем кость до стопы
-    x =  -l*sin;
-    y =  -l*cos;
-   
-  //  console.log("l="+ Math.round(l)+" d="+ Math.round(d) +" koly"+Math.round(this.koly));
-    this.dkol=d;
-    this.x0 = x0; this.y0 = y0;
-    x=x+x0; 
-    y=y+y0; if(y<0)y=0;
+    var x = -l*sin;
+    var y = -l*cos;
+    x = x0+x; y=y0+y;
+    if(y<0) {
+       y=0; //нужно бы пересчитать остальеое
+       l=y0;
+       this.l=l;
+    }
+  
     if(y==0)  this.opora = true; else this.opora = false;
-    this.x = x;
-    this.y = y;
+    this.x = x; this.y = y;
+   // console.log("x0y0="+r(x0)+":"+r(y0)+" xy="+r(this.x)+":"+r(this.y) + " sin,cos="+sin +":"+ cos );
+     
+   //кость до колена     
+    var d = Math.sqrt(KL*KL-(l/2)*(l/2));
+    x = d*cos + (-l/2)*sin;
+    y = -d*sin + (-l/2)*cos;
+    x = x0+x; y = y0+y;
+    if(y<0) y=0; //стукнулись коленом  
+    this.kolx = x; this.koly = y; this.dkol=d;    
+  //  console.log("l="+ Math.round(l)+" d="+ Math.round(d) +" koly"+Math.round(this.koly));
   }
    /*
      if(this.x==this.x0 && this.l==LL)
