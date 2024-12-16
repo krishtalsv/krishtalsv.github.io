@@ -7,6 +7,12 @@ canvas
 {
  border:solid 1px;
 }
+button
+{
+ height:48px;
+ min-width: 48px;
+ /*border:none;*/
+}
 </style>
 </head>
 
@@ -30,7 +36,7 @@ alert (c.toString(16));// i+3 is alpha (the fourth element)
 
 var ctx; var ctx1;
 var w, h;
-var d; function inc(){var i = d/4; if(i<1) i=1;d+=i;} function dec(){ var i = d/4;if(i<1)i=1;d-=i;}
+var d; function inc(){var i = d/4; if(i<1) i=1;d+=i;} function dec(){ var i = d/4;if(i<1)i=1;d-=i;if(d<1)d=1;}
 var stop = false;
 function draw1( ctx, param )
 {
@@ -128,16 +134,21 @@ ctx.stroke();
 
 </script>
 
-<h3>SKW(C)<span id="inf"></span><button onclick="inc();"> + </button><button onclick="dec();"> - </button><button onclick="stop=!stop;"> stop </button></h3>
-<canvas id="hdc" width="128px" height="128px"></canvas>
+ <button onclick="inc();"> + </button><button onclick="dec();"> - </button><button onclick="stop=!stop;"> stop </button>
+ <p>
+ <canvas id="hdc" width="128px" height="128px"></canvas>
 <canvas id="hdc1" width="128px" height="128px"></canvas>
-<!--
+</p>
+  <!--
 <video id="video" width="320" height="240" autoplay></video>
  -->
+ <p>
 <canvas id="hdc2" width="128px" height="128px"></canvas>
 <canvas id="hdc3" width="128px" height="128px"></canvas>
+</p>  
 <!--<canvas id="hdc4" width="128px" height="128px"></canvas>
 <canvas id="hdc" width="128px" height="128px"></canvas>
 -->
+skw(c)<span id="inf"></span>
 </body>
 </html>
