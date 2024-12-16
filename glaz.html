@@ -30,7 +30,16 @@ canvas
 display:inline-block; /* чтобы все спаны реагировали на width */
 }
 /* #ctx_size { color: gray; } */
-
+button
+{
+ height:40px; /*размер кнлпки для смартфона*/
+ min-width:40px;
+ /*border:none;*/
+}
+input {
+  height:32px;
+}  
+  
 </style>
 </head>
 
@@ -610,7 +619,7 @@ function init()
 <button onclick='image_next(-1)'>&lt;</button>
 <input id="inputfile" type ="file" onchange="image_input( this )" style="display:none;" />
 <input type="button" value="Open..." onclick="document.getElementById('inputfile').click();" />
-<button onclick='image_next(1)' >></button>
+<button onclick='image_next(1)' > > </button>
 <span id="image_inf"></span>
 </p>
 <img id="image" src="glaz.jpg"  onload="src_set(this)" onmousemove="image_mousemove(event)" onclick="image_click(this)" alt="image" >
