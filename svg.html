@@ -14,7 +14,11 @@ svg text
   font: 18pt sans-serif; 
   stroke-width:1; /* обрамление символа*/
 }
-    
+
+.click { 
+  cursor: pointer; /*чтобы курсор менял вид на указ.палец*/
+}
+      
 </style>
 </head>
 
@@ -47,7 +51,7 @@ function click()
 
 <!-- svg group,symbol and def -->
 <def> 
-<symbol id="s1" onclick="click();">
+<symbol id="s1" class="click" onclick="click();">
  <rect x="0" y="0" width="100" height="40" style="fill:white;" />
  <text x="10" y="24" style="fill:red;">click me</text>
 </symbol>
