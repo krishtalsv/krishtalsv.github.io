@@ -533,7 +533,9 @@ function src_set( el_image )
 var files = ["IMG_20190203_104051","IMG_20170811_172108","IMG_20180526_112708","IMG_20180509_143731","IMG_20190104_180759","5x1UP","IMG_20171203_135656","IMG_20181111_230939","IMG_20181227_150012","IMG_20171203_132608"];
 var file = 3; 
 function image_next( step ){ file+=step; if( file < 0 ) file = files.length -1; if (file >files.length -1) file = 0; image_file( files[file] );}
-function image_file( filename ){ image.src = '../DCIM/Camera/' + filename + '.jpg'; img.src = image.src; }
+function image_file( filename ){ 
+  image.src = '../DCIM/Camera/' + filename + '.jpg'; 
+  img.src = image.src; }
 function image_input( input )
 {
   if (input.files && input.files[0])
@@ -577,7 +579,7 @@ function init()
  image = document.getElementById('image');
  
  //for( var i=0; i<files.length; i++ ){document.getElementById('files').innerHTML+="<option>"+files[i]+"</option>";}
- image_file(files[file]);
+ //image_file("robot.jpeg");
  for( var i = 0; i<256; i++) pow2[i]=i*i;
  //setInterval( fupdate, 300);
 }
@@ -611,7 +613,7 @@ function init()
 <button onclick='image_next(1)' >></button>
 <span id="image_inf"></span>
 </p>
-<img id="image" src="dummy"  onload="src_set(this)" onmousemove="image_mousemove(event)" onclick="image_click(this)" alt="image" >
+<img id="image" src="glaz.jpg"  onload="src_set(this)" onmousemove="image_mousemove(event)" onclick="image_click(this)" alt="image" >
 
 <script> init(); </script>
 </body>

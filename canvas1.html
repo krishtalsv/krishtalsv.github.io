@@ -1,0 +1,141 @@
+<html>
+<head>
+<style>
+canvas
+{
+ border:solid 1px;
+}
+</style>
+</head>
+
+<body onload="init()">
+
+<script>
+
+function click()
+{
+ alert("click");
+}
+
+function color( ctx )
+{
+var img = ctx.getImageData(10, 10, 1, 1);
+var b = img.data; // 
+
+var c = b[0]*0x10000 + b[1]*0x100 + b[2];
+alert (c.toString(16));// i+3 is alpha (the fourth element)
+}
+
+var ctx; var ctx1;
+var w, h;
+var d; function inc(){var i = d/4; if(i<1) i=1;d+=i;} function dec(){ var i = d/4;if(i<1)i=1;d-=i;}
+var stop = false;
+function draw1( ctx, param )
+{
+ for(var i=0;i<10000;i++)
+ {
+ var x = w*Math.random(); var y = h*Math.random();
+ var c = Math.random();
+ 
+ if( i < 5000)
+ ctx.fillStyle= "#ffffff";
+ else
+ ctx.fillStyle = (c<0.14)?"#0000ff":c<0.44?"#ff0000":"#008000";
+ 
+  //ctx.fillStyle = (c<0.33)?"#0000ff":c<0.66?"#ff0000":"00ff00";
+    
+ ctx.fillRect(x,y,d,d);
+ }
+}
+
+function draw( ctx, param )
+{
+ if(stop) return;
+ var cols = w/d;var rows = h/d;
+ 
+ for(var y = 0; y<rows; y++)
+ for(var x = 0; x<cols; x++)
+ {
+ var r = Math.random();
+ if( Math.random() < 0)
+ ctx.fillStyle= "#ffffff";
+ else
+ {
+ if(param == 0 )
+   ctx.fillStyle = (r<0.14)?"#0000ff":r<0.44?"#ff0000":"#008000";
+ else
+   ctx.fillStyle = (r<0.333)?"#0000ff":r<0.666?"#ff0000":"#00ff00";
+  //ctx.fillStyle = (r<0.2)?"#0000ff":r<0.666?"#ff0000":"#00ff00";
+  }  
+ ctx.fillRect(x*d,y*d,d,d);
+ }
+}
+
+function init()
+{
+/*
+var constraints = { audio: true, video: { width: 320, height: 240 } }; 
+alert("");
+navigator.mediaDevices.getUserMedia(constraints)
+.then(function(stream) {
+ alert(stream);
+  var video = document.querySelector('video');
+  video.srcObject = stream;
+  video.onloadedmetadata = function(e) {
+    video.play();
+  };
+})
+.catch(function(err) { alert(err.name + ": " + err.message); }); // always check for errors at the end
+*/
+d=1;
+
+//setInterval( function(){draw();}, 100);
+var c=document.getElementById("hdc");ctx=c.getContext("2d");
+w=c.width;h=c.height;
+c=document.getElementById("hdc1");ctx1=c.getContext("2d");
+
+//ctx.fillStyle="yellow";
+//ctx.fillRect(0,0,w,h);
+//color(ctx);
+//return;
+setInterval( function(){draw( ctx ,0);}, 100);
+setInterval( function(){draw( ctx1,1 );}, 100);
+
+document.getElementById("inf").innerHTML = w+"x"+h;
+return;
+alert (c.height);
+ctx.fillStyle="yellow";
+ctx.fillRect(0,0,250,100)
+
+ctx.transform(1,0.5,-0.5,1,0,0);
+ctx.fillStyle="red";
+ctx.fillRect(0,0,250,100);
+
+ctx.transform(1,0.5,-0.5,1,0,0);
+ctx.fillStyle="blue";
+ctx.fillRect(0,0,250,100);
+
+ctx.setTransform(1,0,0,1,0,0);
+ctx.rect(20,20,150,100);
+//ctx.stroke();
+ctx.font="48px Arial";
+ctx.strokeText("Hello World!",10,50);
+ctx.arc(100,100,50,0*Math.PI,2*Math.PI);
+ctx.stroke();
+}
+
+</script>
+
+<h3>SKW(C)<span id="inf"></span><button onclick="inc();"> + </button><button onclick="dec();"> - </button><button onclick="stop=!stop;"> stop </button></h3>
+<canvas id="hdc" width="128px" height="128px"></canvas>
+<canvas id="hdc1" width="128px" height="128px"></canvas>
+<!--
+<video id="video" width="320" height="240" autoplay></video>
+ -->
+<canvas id="hdc2" width="128px" height="128px"></canvas>
+<canvas id="hdc3" width="128px" height="128px"></canvas>
+<!--<canvas id="hdc4" width="128px" height="128px"></canvas>
+<canvas id="hdc" width="128px" height="128px"></canvas>
+-->
+</body>
+</html>
