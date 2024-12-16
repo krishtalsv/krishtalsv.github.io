@@ -1,0 +1,61 @@
+<html>
+<head>
+<style>
+svg *
+{
+  stroke-width:0;
+  stroke:black;
+  /*fill:none;*/
+}
+svg text
+{
+  font: 18pt sans-serif; 
+  stroke-width:1; /* обрамление символа*/
+}
+    
+</style>
+</head>
+
+<body>
+<script type="text/javascript">
+function click()
+{
+ alert("OK!");
+}
+</script>
+<h2>SKW (c) SVG</h2>
+
+<svg width="480" height="700">
+
+<!-- svg elements -->
+<rect x="30" y="10" width="100" height="100" style="fill:rgb(255,0,0);" />
+<line x1="0" y1="0" x2="200" y2="200" />
+<text x="40" y="100" style="fill:green;"  transform="rotate(30 20,40)">I love SVG</text>
+<circle  cx="200" cy="25" r="20" style="fill:blue;" />
+<ellipse cx="200" cy="80" rx="50" ry="25" style="fill:yellow;" />
+<polyline points="20,20 40,25 60,40 80,120 120,140 200,180" style="fill:none;" />
+<polygon  points="200,10 250,190 160,210" style="fill:lime;" />
+<path d="M150 0 L75 200 L225 200 Z"  style="fill:gray;" />
+<path d="M 100 350 q 150 -300 300 0" style="fill:none;" />
+
+<!-- svg use some elements -->
+<circle id="my" cx="5" cy="5" r="4" style="fill:red;" />
+<use href="#my" x="10" style="fill:blue;" />
+<use href="#my" x="20" style="fill:yellow;" />
+
+<!-- svg group,symbol and def -->
+<def> 
+<symbol id="s1" onclick="click();">
+ <rect x="0" y="0" width="100" height="40" style="fill:white;" />
+ <text x="10" y="24" style="fill:red;">click me</text>
+</symbol>
+</def>
+<use href="#s1" x="50" y="20" />
+<use href="#s1" x="100" y="120" />
+
+
+<rect x="30" y="300" width="100" height="100" onclick="click();" style="fill:red; stroke-width:1;" />
+</svg>
+
+</body>
+</html>
