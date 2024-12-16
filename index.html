@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
   <title>skws.ru</title>
-  <link rel="icon" href="favicon.ico">
+  <link rel="icon" href="inyan.png">
 <!-- для смартфонов --> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- чтобы страница не кэшировалась браузером -->  
@@ -34,9 +34,9 @@ header {
 	height: 36px;/*высоьа заголовка*/
 	background: #eee;
 }
-.logo {
+.logo { /*строка заголовка*/
 	position: absolute;
-	top: 4px;
+	top: 5px;
 	left: 138px;
 	font-weight: 700;
 	font-size: 24px;
@@ -54,9 +54,9 @@ main {
 	height: 24px;
 	position: absolute;
 	right: 16px;
-	top: 6px;
+	top: 7px;
 }	
-.menu-close {
+.menu-close { /*кнопка закрытия меню*/
 	background: url(close1.png) 0 0 repeat;
 	display: block;
 	width: 24px;
@@ -72,12 +72,12 @@ background: #f0f0f0;
 	display: none;
 	position: absolute;
 	right: -110%;
-	top: 0px;
+	top: 4px;
 	width: 250px;
 	box-sizing: border-box;
 	padding: 16px;/*отступ слева текста меню*/
 	z-index: 9999;	
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	/*box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);*/
 }
 .menu-popup ul {
 	margin: 0;
@@ -93,7 +93,7 @@ background: #f0f0f0;
 /*	font-family: "Arial";*/
  color: #000;*//*цвет пунктов меню*/
 /*color: rgb(255, 255, 255);*/  
-/*	line-height: 1.4;	*/
+line-height: 1.9;	
 	text-decoration: none;
 }
 .body_pointer * {
@@ -101,56 +101,7 @@ background: #f0f0f0;
 }
 </style>
 
-<div class="mobile">
-	<header>
-		<div class="menu">
-			<a class="menu-triger" href="#"></a>
-			<div class="menu-popup">
-				<a class="menu-close" href="#"></a>
-				<ul>
-					<li><a href="#">About</a></li>
-					<li><a href="#">item1</a></li>		
-					<li><a href="#">item2</a></li>
-							<li><a href="#">item3</a></li>
-					<li><a href="#">Контакты</a></li>
-				</ul>						
-			</div>
-		</div>
- 		<div class="logo">SKW</div>
-	</header>
-	<main class="content">
-	    <table>
-   <tr> 
-    <td>
-		 
-		 <a href="robot.html"><img src="robot.jpeg" alt="Робот" align="left"></a>
-		  </td> 
-       <td>
-  <a href="robot.html">РОБОТ beta</a>
-  <p><a href="robot_01_tolchek.html">толчек</a></p>
-  <p><a href="robot_na_koleni.html">на колени</a></p>
-  <p><a href="robot_prigok.html">прыжок</a></p>
-		 
-  </td>
-  </tr>
-  </table>      
-	
- ниже пока бред
-			<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed suscipit mi non nisl tempus, 
-			pretium ultricies purus aliquet. Nam ex nisl, pellentesque a porttitor at, tincidunt id purus. 
-		</p>
-		<p>
-			Phasellus eleifend diam a facilisis auctor. Etiam dapibus velit metus, a vulputate erat 
-			condimentum sed. Aliquam porta at diam ut euismod. Mauris ut turpis vehicula, auctor ex 
-		</p>
- 
-	<p>
-	  <a href="https://t.me/+86J096W8FspkYmYy"><img src="telegram.png" alt="Telegram" ></a>	
-		</p>  
-	skw(c)2024
-	</main>
-</div>
+
 
 <script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
 <script>
@@ -193,4 +144,59 @@ $(function() {
 	});
 });
 </script>
+<div class="mobile">
+	<header>
+		<div class="menu">
+			<a class="menu-triger" href="#"></a>
+			<div class="menu-popup">
+				<a class="menu-close" href="#"></a>
+				<ul>
+					<li><a href="#">About</a></li>
+					<li><a href="#">item1</a></li>		
+					<li><a href="robot.html">item2</a></li>
+							<li><a href="#">item3</a></li>
+					<li><a href="#">Контакты</a></li>
+				</ul>						
+			</div>
+		</div>
+ 		<div class="logo">SKW</div>
+	</header>
+	<main class="content">
+	    <table>
+   <tr> 
+    <td>
+		 
+		 <a href="robot.html"><img src="robot.jpeg" alt="Робот" align="left"></a>
+		  </td> 
+       <td>
+  <a href="robot.html">РОБОТ beta</a>
+  <p><a href="robot_01_tolchek.html">толчек</a></p>
+  <p><a href="robot_na_koleni.html">на колени</a></p>
+  <p><a href="robot_prigok.html">прыжок</a></p>
+		 
+  </td>
+  </tr>
+  </table>      
+	
+  <a href="glaz.html"><img src="" align="left">Глаз</a>
+  <a href="canvas1.html"><img src="" align="left">Опыты</a>
+  <a href="svg.html"><img src="" align="left">SVG</a>
+	  
+	<p>
+	 ниже пока бред..
+			<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed suscipit mi non nisl tempus, 
+			pretium ultricies purus aliquet. Nam ex nisl, pellentesque a porttitor at, tincidunt id purus. 
+		</p>
+		<p>
+			Phasellus eleifend diam a facilisis auctor. Etiam dapibus velit metus, a vulputate erat 
+			condimentum sed. Aliquam porta at diam ut euismod. Mauris ut turpis vehicula, auctor ex 
+		</p>
+ 
+	<p>
+	  <a href="https://t.me/+86J096W8FspkYmYy"><img src="telegram.png" alt="Telegram" ></a>	
+		</p>  
+© 2024 SKW. All Rights Reserved.	  
+	</main>
+</div>
 </html>
