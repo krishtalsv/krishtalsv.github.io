@@ -11,7 +11,6 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />  
-
 </head>
 
 <style type="text/css">
@@ -22,7 +21,7 @@ body {
  font-family: "Arial";
 }
 .mobile {
-	width: 100%; 
+	width: 100%;   
 	/*width: 350px;*/
 	margin: 0 auto;
 	position: relative;
@@ -36,13 +35,14 @@ header {
 	position: absolute;
 	top: 5px;
 	left: 138px;
-	font-weight: 700;
 	font-size: 24px;
+font-weight: 700;  
 	/*color: #ff4632; приятный красный */
  color: #000;/*цвет текста*/
 }
 main {
 	padding: 8px; /* отступ текста слева от края*/
+ max-width: 700px;/*чтобы на компе не расширялось*/ 
 }
 
 .menu-triger {
@@ -175,7 +175,7 @@ function share(){
 				</ul>						
 			</div>
 		</div>
- 		<div class="logo">SKW</div>
+ 		<div class="logo" onclick='share();'>SKW</div>
 	</header>
 	<main class="content">
 	    <table>
@@ -208,14 +208,16 @@ function share(){
 	</p>
  
 	<p>
-	  <div style="display:flex;align-items:center;">
-	  <a href="https://t.me/+86J096W8FspkYmYy"><img src="telegram.png" alt="Telegram" ></a>	
-		  <a><img src="share1.png" onclick="share();" alt="поделиться" ></a>	
+	  <div style="align-items:center;">
+	<!--
+		  <a><img src="share32.png" onclick="share();" alt="поделиться" ></a>	
+ --> 	    
+		 <a href="mailto:skw2008@mail.ru"><img src="email32.png" alt="email" ></a>		    
+	  <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" ></a>	  
 	  </div> 
-
-	  
-© 2024 SKW. All Rights Reserved.	  
-	  <a><img src="share16.png" onclick="share();" alt="поделиться" ></a>		  
+ 
+  © 2024 SKW.	  
+	  <a><img src="share16.png" onclick='share();' alt="поделиться" ></a>		  
 	</main>
 </div>
 </html>
