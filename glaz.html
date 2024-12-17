@@ -617,7 +617,7 @@ function init()
 </div>
 <p>
 <button onclick='image_next(-1)'>&lt;</button>
-<input id="inputfile" type ="file" onchange="image_input( this )" style="display:none;" />
+<input id="inputfile" type ="file" accept="image/*" onchange="image_input( this )" style="display:none;" />
 <input type="button" value="Open..." onclick="document.getElementById('inputfile').click();" />
 <button onclick='image_next(1)' > > </button>
 <span id="image_inf"></span>
