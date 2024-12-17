@@ -147,6 +147,16 @@ $(function() {
 		}
 	});
 });
+/* конец меню */
+
+/*share data*/
+function share(){
+  navigator.share(
+  { title: "skws.ru", text: "Welcome to my site", url: "https://skws.ru",}
+  );
+} 
+/*share data*/
+
 </script>
 
 
@@ -198,9 +208,14 @@ $(function() {
 	</p>
  
 	<p>
+	  <div style="display:flex;align-items:center;">
 	  <a href="https://t.me/+86J096W8FspkYmYy"><img src="telegram.png" alt="Telegram" ></a>	
-		</p>  
+		  <a><img src="share1.png" onclick="share();" alt="поделиться" ></a>	
+	  </div> 
+
+	  
 © 2024 SKW. All Rights Reserved.	  
+	  <a><img src="share16.png" onclick="share();" alt="поделиться" ></a>		  
 	</main>
 </div>
 </html>
