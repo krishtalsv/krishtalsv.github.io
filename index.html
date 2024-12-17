@@ -33,7 +33,11 @@ header {
 	height: 36px;/*высота заголовка*/
 	background: #eee;
 }
-.logo { /*строка заголовка*/
+.logo { /*иконка заголовка*/
+ position: absolute;
+	top: 2px;
+}
+.logotext { /*строка заголовка*/
 	position: absolute;
 	top: 5px;
 	left: 138px;
@@ -176,7 +180,8 @@ function share(){
 				</ul>						
 			</div>
 		</div>
- 		<div class="logo" onclick='share();'>SKW</div>
+	  <a class="logo"><img src="time32.png" alt="logo" ></a>		 	  
+ 		<div class="logotext" onclick='share();'>SKW</div>
 	</header>
 	<main class="content">
 	    <table>
@@ -217,9 +222,14 @@ function share(){
 	  <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" ></a>	  
 	  </div> 
  	</p>
-	  	<p>
-  © 2024 SKW.	  
-	  <a><img src="share16.png" onclick='share();' alt="поделиться" ></a>		
+	  	<p onclick='share();'>
+	  	  	<!--
+	 <a><img src="logo16.png" alt="logo" ></a>		 	  
+ -->
+	  	  SKW © 2024 .	  
+	  	  	<!--
+	  <a><img src="share16.png" alt="поделиться" ></a>		
+	 -->  	  
 	 	</p> 	  
 	</main>
 </div>
