@@ -18,25 +18,12 @@
 body {
  width: 100%; 
  max-width: 700px;/*чтобы на компе не расширялось*/ 
- padding: 0px;/*отступ от краев*/
- margin: 0px;
+ padding: 0px 0px;/*отступ от краев*/
+ margin: 0px;/*чтобы не было полосы прокрутки*/
  font-family: "Arial";
  /*position: relative;*/
  	/*overflow: hidden; */
-}
-
-.logo { /*иконка заголовка*/
- position: absolute;
-	/*top: 2px;*/
-}
-.logotext { /*строка заголовка*/
-/*position: absolute;*/
-/*	top: 10px;*/
-text-align: center;
-/*	left: 138px;*/
-	font-size: 20px;
-font-weight: 700;  
-color: #black;/*цвет текста*/
+ /*background-color: yellow;*/
 }
 
 /* popup menu */
@@ -54,7 +41,7 @@ color: #black;/*цвет текста*/
 /* Style popup menu links */
 .nav a {
   display: block;
-  padding: 12px 8px;
+  padding: 12px 4px;
   text-decoration: none;/*убрать подчеркиваения в меню*/
   font-size: 20px;
   color: black;
@@ -66,7 +53,7 @@ color: #black;/*цвет текста*/
  /* background: black;*/
   display: block;
   position: absolute;
-  right: 0px;
+  right: 4px;
   top: 0;
 }
 
@@ -128,15 +115,15 @@ function menu_click() {
 <!-- Top Navigation 
 		<a href=""><img src="mayak.jpg" width='100%' alt="Р" align="left"></a>	  
 -->  
-	<table width='100%' class="app" >
+	<table width='100%' border='1px' class="app" >
    <tr> 
        <td >
   <a href="robot.html">РОБОТ beta</a><br />
-  <p><a href="robot_01_tolchek.html">толчек</a>
-  <a href="robot_na_koleni.html">на колени</a>
+  <p><a href="robot_01_tolchek.html">толчек,</a>
+  <a href="robot_na_koleni.html">на колени,</a>
   </p>
 <p>         
-  <a href="robot_prigok.html">прыжок</a>   
+  <a href="robot_prigok.html">прыжок,</a>   
   <a href="robot_naklon.html">наклон</a>   
   </p>
        </td>
@@ -178,9 +165,6 @@ function menu_click() {
 	 <a><img src="logo16.png" alt="logo" ></a>		 	  
  -->
 	  	  SKW © 2024  
-	  	  	<!--
-	  <a><img src="share16.png" alt="поделиться" ></a>		
-	 -->  	  
 	 	</p> 	  	  
 </body>
 </html>
