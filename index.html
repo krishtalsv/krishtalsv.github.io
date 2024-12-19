@@ -77,6 +77,16 @@ body {
   width:128px;
  /*align:left;*/
 }
+table, td, th{
+  border: 1px solid gray;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+tr :first-child {
+  width: 60%;
+  white-space: nowrap;
+}
 </style>
 <script>
 
@@ -115,7 +125,7 @@ function menu_click() {
 <!-- Top Navigation 
 		<a href=""><img src="mayak.jpg" width='100%' alt="Р" align="left"></a>	  
 -->  
-	<table width='100%' border='1px' class="app" >
+	<table width='100%' class="app" >
    <tr> 
        <td >
   <a href="robot.html">РОБОТ beta</a><br />
