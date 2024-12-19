@@ -14,183 +14,127 @@
 </head>
 
 <style type="text/css">
+
 body {
-	 /*background: #eee;*/
- padding: 4px;/*отступ сверху*/
+ width: 100%; 
+ max-width: 700px;/*чтобы на компе не расширялось*/ 
+ padding: 0px;/*отступ от краев*/
  margin: 0px;
  font-family: "Arial";
- max-width: 700px;/*чтобы на компе не расширялось*/ 
- 
+ /*position: relative;*/
+ 	/*overflow: hidden; */
 }
-.mobile {
-	width: 100%;   
-	/*width: 350px;*/
-	margin: 0 auto;
-	position: relative;
-	overflow: hidden;
-}
-header {
-	height: 32px;/*высота заголовка*/
-/*	background: #eee;*/
-}
+
 .logo { /*иконка заголовка*/
  position: absolute;
 	/*top: 2px;*/
 }
 .logotext { /*строка заголовка*/
-  
 /*position: absolute;*/
 /*	top: 10px;*/
 text-align: center;
 /*	left: 138px;*/
-	font-size: 24px;
+	font-size: 20px;
 font-weight: 700;  
-	/*color: #ff4632; приятный красный */
- color: #000;/*цвет текста*/
-}
-main {
-	padding: 8px; /* отступ текста слева от края*/
+color: #black;/*цвет текста*/
 }
 
-.menu-triger {
-	background: url(menu1.png) 0 0 repeat;
-	display: block;
-	width: 24px;
-	height: 24px;
-	position: absolute;
-	right: 16px;
-	top: 4px;
-}	
-.menu-close { /*кнопка закрытия меню*/
-	background: url(close1.png) 0 0 repeat;
-	display: block;
-	width: 24px;
-	height: 24px;
-	position: absolute;
-	right: 16px;
-	top: 14px;
-	z-index: 100;
+/* popup menu */
+.nav {
+  overflow: hidden;
+ /* background-color: #333;*//*приятный серый*//*цвет фона меню*/
+  position: relative;
 }
-.menu-popup {
-/*	background: #2c2e3e;*/
-background: #f0f0f0;
-	display: none;
-	position: absolute;
-	right: -110%;
-	top: 36px;
-	width: 250px;
-	box-sizing: border-box;
-	padding: 16px;/*отступ слева текста меню*/
-	z-index: 9999;	
-	/*box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);*/
+
+/* Hide the links inside the navigation menu (except for logo/home) */
+.nav #menu_popup {
+  display: none;
 }
-.menu-popup ul {
-	margin: 0;
-	padding: 0;
+
+/* Style popup menu links */
+.nav a {
+  display: block;
+  padding: 12px 8px;
+  text-decoration: none;/*убрать подчеркиваения в меню*/
+  font-size: 20px;
+  color: black;
 }
-.menu-popup li {
-	list-style: none;
-	margin: 10px 0;
-	padding: 0;
+
+/* Style the hamburger menu */
+.nav a.menu-button {
+  content: url(menu1.png); 
+ /* background: black;*/
+  display: block;
+  position: absolute;
+  right: 0px;
+  top: 0;
 }
-.menu-popup li a {
-	font-size: 16px;
-/*	font-family: "Arial";*/
- color: #000;*//*цвет пунктов меню*/
-/*color: rgb(255, 255, 255);*/  
-line-height: 1.9;	
-	text-decoration: none;
+
+/* Add a grey background color on mouse-over */
+.nav a:hover {
+  cursor: pointer;
+ /* background-color: #ddd;
+  color: black;*/
 }
-.body_pointer * {
-	cursor: pointer;/*курсор пальчик*/
+/* Style the header_bar link (or home/logo) */
+.header_bar {
+ /* background-color: #04AA6D;*//*приятный зеленый*/
+ /* color: white;*/
+  background-color: white;/*увет фона полосы заголовка */
+ /* color: red;*//*цвет текста полосы заголовка*/
+}
+/*end popup menu*/
+.app {
+}
+.app img {
+  width:128px;
+  align:left;
 }
 </style>
-<!--
-<script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
-  crossorigin="anonymous">
-</script>
- --> 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
- 
-
 <script>
-$(function() {
-	var $menu_popup = $('.menu-popup');
-
-	$(".menu-triger").click(function(){
-		$('body').addClass('body_pointer');		
-		$menu_popup.show(0);
-		$menu_popup.animate(
-			{right: parseInt($menu_popup.css('left'),10) == 0 ? -$menu_popup.outerWidth() : 0}, 
-			300
-		);
-		return false;
-	});	
-	
-	$(".menu-close").click(function(){
-		$('body').removeClass('body_pointer');		
-		$menu_popup.animate(
-			{right: parseInt($menu_popup.css('right'),10) == 0 ? -$menu_popup.outerWidth() : 0}, 
-			300, 
-			function(){
-				$menu_popup.hide(0);
-			}
-		);
-		return false;
-	});	
-	
-	$(document).on('click', function(e){
-		if (!$(e.target).closest('.menu-popup').length){
-			$('body').removeClass('body_pointer');
-			$menu_popup.animate(
-				{right: parseInt($menu_popup.css('right'),10) == 0 ? -$menu_popup.outerWidth() : 0}, 
-				300, 
-				function(){
-					$menu_popup.hide(0);
-				}
-			);
-		}
-	});
-});
-/* конец меню */
 
 /*share data*/
 function share(){
   navigator.share(
-  { title: "skws.ru", text: "Welcome to my site", url: "https://skws.ru",}
+  { title: "skws.ru", text: "Welcome to", url: "https://skws.ru",}
   );
 } 
-/*share data*/
+/*end share data*/
+
+/* Toggle between showing and hiding menu links when the user clicks on the hamburger menu / bar icon */
+function menu_click() {
+  var menu = document.getElementById("menu_popup");
+  if (menu.style.display == "block") {
+    menu.style.display = "none";
+  } else {
+    menu.style.display = "block";
+  }
+}
 
 </script>
 
-
-<div class="mobile">
-	<header>
-		<div class="menu">
-			<a class="menu-triger" href="#"></a>
-			<div class="menu-popup">
-				<a class="menu-close" href="#"></a>
-				<ul>
-					<li><a href="#">About</a></li>
-					<li><a href="#">item1</a></li>		
-					<li><a href="robot.html">item2</a></li>
-							<li><a href="#">item3</a></li>
-					<li><a href="#">Контакты</a></li>
-				</ul>						
-			</div>
-		</div>
-	  <a class="logo"><img src="logo32.png" width='24px'; alt="logo" ></a>		 	  
- 		<div class="logotext">SKW</div>
-	</header>
-	<main class="content">
+<body>
+<!-- Top Navigation -->
+<div class="nav">
+  <a href="#home" class="header_bar">SKW</a>
+  
+  <div id="menu_popup">
+    <a href="#news">News</a>
+    <a href="#contact">Contact</a>
+    <a href="#about">About</a>
+  </div>
+  
+  <a href="javascript:void(0);" class="menu-button" onclick="menu_click()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>
+<!-- Top Navigation 
 		<a href=""><img src="mayak.jpg" width='100%' alt="Р" align="left"></a>	  
-	<table>
+-->  
+	<table class="app" >
    <tr> 
     <td>
-		 <a href="robot.html"><img src="robot.jpeg" width='128px'alt="Робот" align="left"></a>
+		 <a href="robot.html"><img src="robot.jpeg" alt="Робот" ></a>
 		  </td> 
        <td >
   <a href="robot.html">РОБОТ beta</a><br />
@@ -199,24 +143,40 @@ function share(){
   <a href="robot_prigok.html">прыжок</a>   
   <a href="robot_naklon.html">наклон</a>   
   </p>
+  </td></tr>
+	  <tr>
+	    <td> 
+	    <a href="glaz.html"><img src="glaz.jpg" alt="Глаз"></a> </td> 
+	  <td> <a href="glaz.html">Глаз</a></td>
+	  </tr>
+	  <tr><td>
+		    <a href="canvas1.html"><img src="opit.jpg" alt="Глаз"></a>
+		  </td> 
+       <td >
+         <a href="canvas1.html">Опыты</a>
 		 
-  </td>
-  </tr>
-  </table>      
-	
-  <a href="glaz.html"><img src="" align="left">Глаз</a>
-  <a href="canvas1.html"><img src="" align="left">Опыты</a>
-  <a href="svg.html"><img src="" align="left">SVG</a>
-	  
+  </td> </tr>
+	  	    <tr> 
+    <td>
+   <a href="svg.html"><img src="svg.jpg"></a>
+ 		  </td> 
+       <td >
+      <p>
+         <a href="svg.html">SVG</a>
+      </p>
+  </td> </tr>
+  </table>   
+
 	<p>
-	 ниже пока бред..
+	 ниже пока бред..			</p>
 			<p>
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed suscipit mi non nisl tempus, 
 			</p>
 		<p>
 			Phasellus eleifend diam a facilisis auctor. Etiam dapibus velit metus, a vulputate erat 
 	</p>
- 
+	  
+ <!-- линейка ссылок контактов -->
 	<p>
 	  <div style="align-items:center;">
 		  <a><img src="share32.png" onclick="share();" alt="поделиться" ></a>	 
@@ -232,7 +192,6 @@ function share(){
 	  	  	<!--
 	  <a><img src="share16.png" alt="поделиться" ></a>		
 	 -->  	  
-	 	</p> 	  
-	</main>
-</div>
+	 	</p> 	  	  
+</body>
 </html>
