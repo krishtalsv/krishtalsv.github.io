@@ -26,11 +26,52 @@ body {
  /*background-color: yellow;*/
 }
 
-/* popup menu */
+/* nav bar */
 .nav {
   overflow: hidden;
  /* background-color: #333;*//*приятный серый*//*цвет фона меню*/
-  position: relative;
+ /* position: relative;*/
+   /* background-color: #04AA6D;*//*приятный зеленый*/
+ /* color: white;*/
+   height:48px;
+  background-color: #333;/*увет фона полосы заголовка */
+ /* color: red;*//*цвет текста полосы заголовка*/
+}
+/* Style nav links */
+.nav a {
+  float: left;
+  display: block;
+  padding: 12px 4px;
+  text-decoration: none;/*убрать подчеркиваения в меню*/
+  font-size: 20px;
+  color: white;
+}
+/* Style the nav-bar logo(SKW)(or home/logo) */
+.nav a.nav-logo{
+}
+/* Style the nav-bar title */
+.nav a.nav-title{
+ font-size: 20px;  
+  font-weight: bold;
+}
+/* Style the menu button */
+.nav a.dropdown-button {
+  content: url(menu1.png); 
+ /* background: black;*/
+  display: block;
+  
+  position: absolute;
+  right: 8px;
+ /* top: 0;*/
+  
+}
+  
+
+/* Add a grey background color on mouse-over */
+.nav a:hover {
+  cursor: pointer;
+ /* background-color: #ddd;
+  color: black;*/
 }
 
 .dropdown1-content {
@@ -40,7 +81,6 @@ body {
   z-index: 1;
   /* background-color: #999;*/
  /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
-
 }
 .dropdown1-content a {
   display: block;
@@ -55,38 +95,6 @@ body {
   background-color: #ddd;
 }
 
-/* Style popup menu links */
-.nav a {
-  display: block;
-  padding: 12px 4px;
-  text-decoration: none;/*убрать подчеркиваения в меню*/
-  font-size: 20px;
-  color: black;
-}
-
-/* Style the hamburger menu */
-.nav a.dropdown-button {
-  content: url(menu1.png); 
- /* background: black;*/
-  display: block;
-  position: absolute;
-  right: 4px;
-  top: 0;
-}
-
-/* Add a grey background color on mouse-over */
-.nav a:hover {
-  cursor: pointer;
- /* background-color: #ddd;
-  color: black;*/
-}
-/* Style the header_bar link (or home/logo) */
-.header_bar {
- /* background-color: #04AA6D;*//*приятный зеленый*/
- /* color: white;*/
-  background-color: white;/*увет фона полосы заголовка */
- /* color: red;*//*цвет текста полосы заголовка*/
-}
 /*end popup menu*/
 .app {
 }
@@ -109,11 +117,11 @@ tr :first-child {
   white-space: nowrap;
 }
 
-
 /**/
 .navbar {
   overflow: hidden;
   background-color: gray;
+  display: none;/*tmp hide*/
 }
 .navbar a {
   float: left;
@@ -148,7 +156,7 @@ tr :first-child {
   left: 4px;
   /*width:100%;*//* min-width: 160px;*/
   z-index: 1;
-  background-color: #f9f9f9;
+  background-color: #999;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
@@ -164,8 +172,6 @@ tr :first-child {
 .dropdown-content a:hover {
   background-color: #ddd;
 }
-
-
   
 /**/
 .show { display: block; }
@@ -215,16 +221,15 @@ window.onclick = function(e) {
 <body>
 <!-- Top Navigation -->  
 <div class="nav">
-  <a href="#home" class="header_bar">SKW</a>
+  <a href="#home" class="nav-logo">SKW</a>
+  <a href="javascript:void(0);" class="nav-title">Human & Nature</a>
   <a href="javascript:void(0);" class="dropdown-button" onclick="dropdown()"></a>
-
+ </div>
   <div class="dropdown1-content" id="menu_popup">
     <a href="#news">News</a>
     <a href="#contact">Contact</a>
     <a href="#about">About</a>
   </div>
-  
- </div>
 <!-- Top Navigation -->    
 <div class="navbar" >
   <a href="#home">SKW</a>
@@ -279,9 +284,6 @@ window.onclick = function(e) {
     <td> <a href="svg.html"><img src="svg.jpg"></a></td> 	  	      
    	  	    </tr>
   </table>   
-
-	<p>
-	 ниже пока бред..			</p>
 			<p>
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed suscipit mi non nisl tempus, 
 			</p>
