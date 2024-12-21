@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="ru">
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
   <title>skws.ru</title>
@@ -8,10 +8,7 @@
 <!-- для смартфонов --> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- чтобы страница не кэшировалась браузером -->  
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />  
-</head>
+<meta http-equiv="Cache-Control" content="no-cache" />
 
 <style type="text/css">
 
@@ -25,7 +22,6 @@ body {
  	/*overflow: hidden; */
  /*background-color: yellow;*/
 }
-
 /* nav bar */
 .nav {
   overflow: hidden;
@@ -94,34 +90,11 @@ body {
 .dropdown1-content a:hover {
   background-color: #ddd;
 }
-
-/*end popup menu*/
-.app {
-}
-.app img {
-  width:128px;
- /*align:left;*/
-}
-table, td, th{
-  /*display: none;*/
-  border: 1px solid gray;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-td a{
-  text-decoration: none;
-}
-
-tr :first-child {
-  width: 60%;
-  white-space: nowrap;
-}
-
 /**/
 .navbar {
   overflow: hidden;
   background-color: gray;
-  display: none;/*tmp hide*/
+  display: none;
 }
 .navbar a {
   float: left;
@@ -174,6 +147,35 @@ tr :first-child {
 }
   
 /**/
+/*end popup menu*/
+
+.app {
+  
+}
+.app a{
+  color : black;
+}
+.app img {
+ width: 256px; 
+ /*height:256px;*/
+ align:left;
+}
+table, td, th{
+  /*display: none;*/
+  border: 1px solid gray;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+td a{
+  text-decoration: none;
+}
+
+tr :first-child {
+  width: 50%;
+  white-space: nowrap;
+}
+
+
 .show { display: block; }
 
 .contact {
@@ -181,6 +183,8 @@ tr :first-child {
   /*display: none;*/
 }
 </style>
+</head>  
+
 <script>
 
 /*share data*/
@@ -219,6 +223,7 @@ window.onclick = function(e) {
 </script>
 
 <body>
+  
 <!-- Top Navigation -->  
 <div class="nav">
   <a href="#home" class="nav-logo">SKW</a>
@@ -245,45 +250,47 @@ window.onclick = function(e) {
   </div> 
 </div>  
 
-  
 <!-- End Navigation -->
 
   
-<!-- Top Navigation 
-		<a href=""><img src="mayak.jpg" width='100%' alt="Р" align="left"></a>	  
+<!-- rem 
+		<a href=""><img src="mayak.jpg" width='100%' alt="Р" align="left"/></a>	  
 --> 
+  
 	<h3>Programs for human</h3>
- <img width="128px" src="polinka.png">	    
-<!-- REM
-<p>Click on the link to see program:</p>
--->   	
-	<table class="app" >
+ <img width="128px" src="polinka2.png"/>	    
+
+<p>Click on the link:</p>
+<div class="app">
+	<table > 
    <tr> 
        <td >
-  <a href="robot.html"><h3>РОБОТ</h3> beta</a><br />
+  <a href="robot.html"><h3>РОБОТ beta</h3></a>
+  <p>       
   <p><a href="robot_01_tolchek.html">толчек,</a>
   <a href="robot_na_koleni.html">на колени,</a>
-  </p>
-<p>         
+  </p>  
+  <p>    
   <a href="robot_prigok.html">прыжок,</a>   
   <a href="robot_naklon.html">наклон</a>   
   </p>
        </td>
-    <td>	 <a href="robot.html"><img src="robot.jpeg" alt="Робот" ></a> </td>      
+    <td>	 <a href="robot.html"><img src="robot1.jpg"/></a> </td>      
    </tr>
 	  <tr>
 		  <td> <a href="glaz.html"><h3>Глаз</h3></a></td>    
-   <td> <a href="glaz.html"><img src="glaz.jpg" alt="Глаз"></a> </td> 	    
+   <td> <a href="glaz.html"><img src="glaz.jpg"/></a> </td> 	    
 		  </tr>
 	  <tr>
 	    <td> <a href="canvas1.html"><h3>Опыты</h3></a> </td>
-	    <td> <a href="canvas1.html"><img src="opit.jpg" alt="Глаз"></a> </td> 
+	    <td> <a href="canvas1.html"><img src="opit.jpg"/></a> </td> 
        </tr>
 	  	    <tr> 
 	  	 <td> <a href="svg.html"><h3>SVG</h3></a></td> 
-    <td> <a href="svg.html"><img src="svg.jpg"></a></td> 	  	      
+    <td> <a href="svg.html"><img src="svg.jpg"/></a></td> 	  	      
    	  	    </tr>
   </table>   
+	</div>
 			<p>
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed suscipit mi non nisl tempus, 
 			</p>
@@ -294,9 +301,9 @@ window.onclick = function(e) {
  <!-- линейка ссылок контактов -->
 	<p>
 	  <div class='contact'>
-		  <img src="share32.png" onclick="share();" alt="поделиться" >	 
-		  <a href="mailto:skw2008@mail.ru"><img src="email32.png" alt="email" ></a>		    
-	   <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" ></a>	  
+		  <img src="share32.png" onclick="share();" alt="поделиться" />	 
+		  <a href="mailto:skw2008@mail.ru"><img src="email32.png" alt="email" /></a>		    
+	   <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" /></a>	  
 	  </div> 
  	</p>
 	  	<p>
