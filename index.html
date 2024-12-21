@@ -16,12 +16,12 @@
 <style type="text/css">
 
 body {
- width: 100%; 
+ /*width: 100%; */
  max-width: 700px;/*чтобы на компе не расширялось*/ 
- padding: 0px 0px;/*отступ от краев*/
- margin: 0px;/*чтобы не было полосы прокрутки*/
+/* padding: 0px 0px;*//*отступ от краев*/
+/* margin: 0px;*//*чтобы не было полосы прокрутки*/
  font-family: "Arial";
- /*position: relative;*/
+ text-decoration: none; 
  	/*overflow: hidden; */
  /*background-color: yellow;*/
 }
@@ -33,9 +33,26 @@ body {
   position: relative;
 }
 
-/* Hide the links inside the navigation menu (except for logo/home) */
-.nav #menu_popup {
+.dropdown1-content {
   display: none;
+  position: absolute;
+  min-width: 160px;
+  z-index: 1;
+  /* background-color: #999;*/
+ /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+
+}
+.dropdown1-content a {
+  display: block;
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  text-align: left;
+}
+
+.dropdown1-content a:hover {
+  background-color: #ddd;
 }
 
 /* Style popup menu links */
@@ -48,7 +65,7 @@ body {
 }
 
 /* Style the hamburger menu */
-.nav a.menu-button {
+.nav a.dropdown-button {
   content: url(menu1.png); 
  /* background: black;*/
   display: block;
@@ -78,14 +95,84 @@ body {
  /*align:left;*/
 }
 table, td, th{
+  /*display: none;*/
   border: 1px solid gray;
   border-collapse: collapse;
   table-layout: fixed;
+}
+td a{
+  text-decoration: none;
 }
 
 tr :first-child {
   width: 60%;
   white-space: nowrap;
+}
+
+
+/**/
+.navbar {
+  overflow: hidden;
+  background-color: gray;
+}
+.navbar a {
+  float: left;
+  font-size: 18px;
+  padding: 14px 16px;
+  text-decoration: none;
+  color:black;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+.dropdown .dropbtn {
+  cursor: pointer;
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: green;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+  background-color: red;
+}
+  
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 4px;
+  /*width:100%;*//* min-width: 160px;*/
+  z-index: 1;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+
+  
+/**/
+.show { display: block; }
+
+.contact {
+  align-items:center;
+  /*display: none;*/
 }
 </style>
 <script>
@@ -99,7 +186,7 @@ function share(){
 /*end share data*/
 
 /* Toggle between showing and hiding menu links when the user clicks on the hamburger menu / bar icon */
-function menu_click() {
+function dropdown() {
   var menu = document.getElementById("menu_popup");
   if (menu.style.display == "block") {
     menu.style.display = "none";
@@ -107,28 +194,68 @@ function menu_click() {
     menu.style.display = "block";
   }
 }
-
+/* menu*/
+/* When the user clicks on the button, 
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+  // Close the dropdown if the user clicks outside of it
+window.onclick = function(e) {
+  if (!e.target.matches('.dropbtn')) {
+  var myDropdown = document.getElementById("myDropdown");
+    if (myDropdown.classList.contains('show')) {
+      myDropdown.classList.remove('show');
+    }
+  }
+}
+/*end menu*/
 </script>
 
 <body>
-<!-- Top Navigation -->
+<!-- Top Navigation -->  
 <div class="nav">
   <a href="#home" class="header_bar">SKW</a>
-  
-  <div id="menu_popup">
+  <a href="javascript:void(0);" class="dropdown-button" onclick="dropdown()"></a>
+
+  <div class="dropdown1-content" id="menu_popup">
     <a href="#news">News</a>
     <a href="#contact">Contact</a>
     <a href="#about">About</a>
   </div>
-  <a href="javascript:void(0);" class="menu-button" onclick="menu_click()"></a>
+  
+ </div>
+<!-- Top Navigation -->    
+<div class="navbar" >
+  <a href="#home">SKW</a>
+  <div class="dropdown" style="float: right;" >
+  <a class="dropbtn" onclick="myFunction()">Dropdown
+    <i class="fa fa-caret-down"></i>
+  </a>
+  <div class="dropdown-content" id="myDropdown">
+       <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
   </div>
+  </div> 
+</div>  
+
+  
+<!-- End Navigation -->
+
+  
 <!-- Top Navigation 
 		<a href=""><img src="mayak.jpg" width='100%' alt="Р" align="left"></a>	  
--->  
-	<table width='100%' class="app" >
+--> 
+	<h3>Programs for human</h3>
+ <img width="128px" src="polinka.png">	    
+
+<p>Click on the link to see program:</p>
+  	
+	<table class="app" >
    <tr> 
        <td >
-  <a href="robot.html">РОБОТ beta</a><br />
+  <a href="robot.html"><h3>РОБОТ</h3> beta</a><br />
   <p><a href="robot_01_tolchek.html">толчек,</a>
   <a href="robot_na_koleni.html">на колени,</a>
   </p>
@@ -140,15 +267,15 @@ function menu_click() {
     <td>	 <a href="robot.html"><img src="robot.jpeg" alt="Робот" ></a> </td>      
    </tr>
 	  <tr>
-		  <td> <a href="glaz.html">Глаз</a></td>    
+		  <td> <a href="glaz.html"><h3>Глаз</h3></a></td>    
    <td> <a href="glaz.html"><img src="glaz.jpg" alt="Глаз"></a> </td> 	    
 		  </tr>
 	  <tr>
-	    <td> <a href="canvas1.html">Опыты</a> </td>
+	    <td> <a href="canvas1.html"><h3>Опыты</h3></a> </td>
 	    <td> <a href="canvas1.html"><img src="opit.jpg" alt="Глаз"></a> </td> 
        </tr>
 	  	    <tr> 
-	  	 <td> <a href="svg.html">SVG</a></td> 
+	  	 <td> <a href="svg.html"><h3>SVG</h3></a></td> 
     <td> <a href="svg.html"><img src="svg.jpg"></a></td> 	  	      
    	  	    </tr>
   </table>   
@@ -164,15 +291,15 @@ function menu_click() {
 	  
  <!-- линейка ссылок контактов -->
 	<p>
-	  <div style="align-items:center;">
-		  <a><img src="share32.png" onclick="share();" alt="поделиться" ></a>	 
-		 <a href="mailto:skw2008@mail.ru"><img src="email32.png" alt="email" ></a>		    
-	  <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" ></a>	  
+	  <div class='contact'>
+		  <img src="share32.png" onclick="share();" alt="поделиться" >	 
+		  <a href="mailto:skw2008@mail.ru"><img src="email32.png" alt="email" ></a>		    
+	   <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" ></a>	  
 	  </div> 
  	</p>
 	  	<p>
 	  	  	<!--
-	 <a><img src="logo16.png" alt="logo" ></a>		 	  
+	 <img src="logo16.png" alt="logo" >  
  -->
 	  	  SKW © 2024  
 	 	</p> 	  	  
