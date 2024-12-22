@@ -18,7 +18,7 @@ body {
 /* padding: 0px 0px;*//*отступ от краев*/
  margin: 0px;/*отступ от краев экрана*/
  /*padding: 12px 4px;*/
- font-family: "Arial";
+ font-family: "arial";
  text-decoration: none; 
  	/*overflow: hidden; */
  /*background-color: yellow;*/
@@ -71,7 +71,7 @@ body {
   color: black;*/
 }
 
-.dropdown1-content {
+.dropdown-content {
   display: none;
   position: absolute;
   width: 100%;
@@ -81,77 +81,34 @@ body {
   /* background-color: #999;*/
  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
-.dropdown1-content a {
-  display: block;
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  text-align: left;
-}
-
-.dropdown1-content a:hover {
-  background-color: #ddd;
-}
-/**/
-.navbar {
-  overflow: hidden;
-  background-color: gray;
-  display: none;
-}
-.navbar a {
-  float: left;
-  font-size: 18px;
-  padding: 14px 16px;
-  text-decoration: none;
-  color:black;
-}
-
-.dropdown {
-  float: left;
-  overflow: hidden;
-}
-.dropdown .dropbtn {
-  cursor: pointer;
-  font-size: 16px;  
-  border: none;
-  outline: none;
-  color: white;
-  padding: 14px 16px;
-  background-color: green;
-  margin: 0;
-}
-
-.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-  background-color: red;
-}
-  
-.dropdown-content {
-  display: none;
-  position: absolute;
-  left: 4px;
-  /*width:100%;*//* min-width: 160px;*/
-  z-index: 1;
-  background-color: #999;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-
 .dropdown-content a {
+  display: block;
   float: none;
   color: black;
   padding: 12px 16px;
   text-decoration: none;
-  display: block;
   text-align: left;
 }
 
 .dropdown-content a:hover {
   background-color: #ddd;
 }
+/**/
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+  background-color: red;
+}
   
 /**/
 /*end popup menu*/
-
+ 
+.content{
+ padding:4px 8px;
+}
+ 
+.app{
+ 
+}
 .app table{
    width: 100%;
 }
@@ -176,8 +133,31 @@ td a{
 
 .contact {
   align-items:center;
-  /*display: none;*/
+  padding: 0px 8px;
+  display: none;
 }
+.contact a{
+  margin: 0px 16px;
+  /*display: none;*/
+} 
+.footer{
+ padding:0px 0px; margin:0px;
+ height:32px;
+ /*background-color: lightgray;*/
+ /*align-items: center;*/
+}  
+ .footer hr{
+ padding:0px; margin:0px;
+ }
+.footer a{
+  padding:0px; margin:0px;
+ text-decoration: none;
+ color:black;
+}   
+.footer img{
+  padding:0px; margin:0px;
+ vertical-align:bottom;
+}   
 </style> 
 
 <script>
@@ -192,7 +172,7 @@ function share(){
 
 /* Toggle between showing and hiding menu links when the user clicks on the hamburger menu / bar icon */
 function dropdown() {
-  var menu = document.getElementById("menu_popup");
+  var menu = document.getElementById("dropdown");
   if (menu.style.display == "block") {
     menu.style.display = "none";
   } else {
@@ -203,14 +183,14 @@ function dropdown() {
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
 function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
+  document.getElementById("dropdown").classList.toggle("show");
 }
   // Close the dropdown if the user clicks outside of it
 window.onclick = function(e) {
-  if (!e.target.matches('.dropbtn')) {
-  var myDropdown = document.getElementById("myDropdown");
-    if (myDropdown.classList.contains('show')) {
-      myDropdown.classList.remove('show');
+  if (!e.target.matches('dropdown-button')) {
+  var dropdown = document.getElementById("dropdown");
+    if (dropdown.classList.contains('show')) {
+      dropdown.classList.remove('show');
     }
   }
 }
@@ -225,35 +205,20 @@ window.onclick = function(e) {
   <a href="javascript:void(0);" class="nav-title">Human & Nature</a>
   <a href="javascript:void(0);" class="dropdown-button" onclick="dropdown()"></a>
  </div>
-  <div class="dropdown1-content" id="menu_popup">
+  <div class="dropdown-content" id="dropdown">
     <a href="#news">News</a>
     <a href="#contact">Contact</a>
     <a href="#about">About</a>
   </div>
-<!-- Top Navigation -->    
-<div class="navbar" >
-  <a href="#home">SKW</a>
-  <div class="dropdown" style="float: right;" >
-  <a class="dropbtn" onclick="myFunction()">Dropdown
-    <i class="fa fa-caret-down"></i>
-  </a>
-  <div class="dropdown-content" id="myDropdown">
-       <a href="#">Link 1</a>
-    <a href="#">Link 2</a>
-    <a href="#">Link 3</a>
-  </div>
-  </div> 
-</div>  
-
 <!-- End Navigation -->
 
-  
+<div class="content" >
 <!-- rem 
 		<a href=""><img src="mayak.jpg" width='100%' alt="Р" align="left"></a>	  
 --> 
   
 	<h3>Programs for human</h3>
- <img width="128" src="main.png" alt="">	    
+ <img height="128" style="margin: auto 100px;" src="main.png" alt="">	    
 
 <p>Click on the link:</p>
 <div class="app">
@@ -292,20 +257,23 @@ window.onclick = function(e) {
 		<p>
 			Phasellus eleifend diam a facilisis auctor. Etiam dapibus velit metus, a vulputate erat 
 	</p>
-	  <hr>
+
  <!-- линейка ссылок контактов -->
-	
-	  <div class='contact'>
-		  <img src="share32.png" onclick="share();" alt="поделиться" >	 
+	  <div class='contact'>	     
+		  <a href"javascript:void(0);"><img src="share32.png" onclick="share();" alt="поделиться" >	</a> 
 		  <a href="mailto:skw2008@mail.ru"><img src="email32.png" alt="email" ></a>		    
 	   <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" ></a>	  
-	  </div> 
-  <hr>
-	  	<p>
+	  </div> 	 	<!-- end contact   --> 
+   
+	 <div class="footer" >  
+	    <hr> 
 	  	  	<!--
 	 <img src="logo16.png" alt="logo" >  
  -->
-	  	  SKW © 2024  
-	 	</p> 	  	  
+	  <a > SKW © 2024 </a><a href="mailto:skw2008@mail.ru">skw2008@mail.ru</a>		    
+ 	   <a href="https://t.me/+86J096W8FspkYmYy"><img src="tme32.png" alt="Telegram" ></a>	  
+  </div> 	 	<!-- end footer   --> 
+	</div> 	 	<!-- end content   --> 
+
 </body>
 </html>
