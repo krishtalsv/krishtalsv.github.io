@@ -74,7 +74,7 @@ body {
   display: none;
   position: absolute;
   width: 100%;
-  min-width: 160px;
+  min-width: 256px;
   z-index: 1;
  background-color: yellow;
   /* background-color: #999;*/
@@ -151,30 +151,25 @@ body {
 /**/
 /*end popup menu*/
 
-.app {
-  
+.app table{
+   width: 100%;
 }
 .app a{
   color : black;
 }
 .app img {
- width: 128;
+ width: 128px;
 }
 table, td, th{
   /*display: none;*/
   border: 1px solid gray;
   border-collapse: collapse;
-  table-layout: fixed;
+  /*table-layout: fixed;*/
+  white-space: nowrap;
 }
 td a{
   text-decoration: none;
 }
-
-tr :first-child {
-  width: 60%;
-  white-space: nowrap;
-}
-
 
 .show { display: block; }
 
@@ -274,7 +269,7 @@ window.onclick = function(e) {
   <a href="robot_naklon.html">наклон</a>   
   </p>
        </td>
-    <td>	 <a href="robot.html"><img src="robot1.jpg" alt=""></a> </td>      
+    <td>	 <a href="robot.html"><img src="robot.jpg" alt=""></a> </td>      
    </tr>
 	  <tr>
 		  <td> <a href="glaz.html"><h3>Глаз</h3></a></td>    
