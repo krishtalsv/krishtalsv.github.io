@@ -25,7 +25,7 @@ body {
 }
 /* nav bar */
 .nav {
-  overflow: hidden;
+  /*overflow: hidden;*/
  /* background-color: #333;*//*приятный серый*//*цвет фона меню*/
  /* position: relative;*/
    /* background-color: #04AA6D;*//*приятный зеленый*/
@@ -49,12 +49,12 @@ body {
 /* Style the nav-bar title */
 .nav a.nav-title{
  font-size: 20px;  
-  font-weight: bold;
+ font-weight: bold;
 }
 /* Style the menu button */
 .dropdown-button {
+ content: url(menu1.png); 
  /*
-  float: right;
   padding: 14px 16px;
   cursor: pointer;
   font-size: 16px;  
@@ -66,33 +66,22 @@ body {
 }
    
 .nav a.dropdown-button {
-  content: url(menu1.png); 
- /* background: black;*/
   display: block;
-  
-  position: absolute;
-  right: 8px;
- /* top: 0;*/
+  float: right;
 }
 
-/* Add a grey background color on mouse-over */
-.nav a:hover {
-  cursor: pointer;
- /* background-color: #ddd;
-  color: black;*/
-}
-
-.dropdown-content {
+.dropdown {
   display: none;
   position: absolute;
   width: 100%;
-  min-width: 256px;
+  min-width: 128px;
   z-index: 1;
  background-color: #eee;
   /* background-color: #999;*/
  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
-.dropdown-content a {
+ 
+.dropdown a {
   display: block;
   float: none;
   color: black;
@@ -100,15 +89,24 @@ body {
   text-decoration: none;
   text-align: left;
 }
-
-.dropdown-content a:hover {
-  background-color: #ddd;
+ 
+.show { display: block; } 
+ 
+/* Add a grey background color on mouse-over */
+.nav a:hover {
+  cursor: pointer; /*палчик при навед. мышкой*/
+ /* background-color: #ddd;*/
 }
-/**/
-
-.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+ 
+.dropdown a:hover {
+  cursor: pointer; /*палчик при навед. мышкой*/
+  background-color: #ddd;/*подсветка серым при наведении мышкой пунктов меню */
+}
+ 
+.navbar a:hover, .dropbtn, .dropbtn:focus {
   background-color: red;
 }
+
 /*end popup menu*/
  
 .content{
@@ -139,8 +137,6 @@ table, td, th{
 td a{
   text-decoration: none;
 }
-
-.show { display: block; }
 
 .contact {
   align-items:center;
@@ -182,27 +178,35 @@ function share(){
 /*end share data*/
 
 
-/* menu*/
+/* dropdown */
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
  /* Toggle between showing and hiding menu links when the user clicks on the hamburger menu / bar icon */
 function dropdown() {
   // document.getElementById("dropdown").classList.toggle("show");
-  var dropdown = document.getElementById("dropdown");
-  if (dropdown.style.display == "block") {
-      dropdown.style.display = "none";
-  } else {
-      dropdown.style.display = "block";
-  }
+  var el = document.getElementById("dropdown");
+ alert(el.style);
+  if (el.style.display == "block")
+      el.style.display = "none";
+   else 
+      el.style.display = "block";
+ /*
+   if (dropdown.classList.contains('show')) {
+      dropdown.classList.remove('show');
+    }
+ */
 }
   // Close the dropdown if the user clicks outside of it
 window.onclick = function(e) {
-  if (!e.target.matches('dropdown-button')) {
-  var dropdown = document.getElementById("dropdown");
-  if (dropdown.classList.contains('show')) {
-      dropdown.classList.remove('show');
-    }
-  }
+  if (e.target.matches('dropdown') || e.target.matches('dropdown')) return;
+  var el = document.getElementById("dropdown");
+ alert(el.style.display);
+  if (el.style.display == "block") 
+ {
+      alert("1234455");
+      dropdown(); /*для закрытия меню имитирукм нажатие кнопки*/
+      
+ }
 }
 /*end menu*/
 </script>
@@ -215,7 +219,7 @@ window.onclick = function(e) {
   <a href="javascript:void(0);" class="nav-title">Human & Nature</a>
   <a href="javascript:void(0);" class="dropdown-button" onclick="dropdown()"></a>
  </div>
-  <div class="dropdown-content" id="dropdown">
+  <div class="dropdown" id="dropdown">
     <a href="#news">News</a>
     <a href="#contact">Contact</a>
     <a href="#about">About</a>
