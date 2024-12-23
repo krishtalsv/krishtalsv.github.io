@@ -52,6 +52,19 @@ body {
   font-weight: bold;
 }
 /* Style the menu button */
+.dropdown-button {
+ /*
+  float: right;
+  padding: 14px 16px;
+  cursor: pointer;
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  background-color: green;
+ */
+}
+   
 .nav a.dropdown-button {
   content: url(menu1.png); 
  /* background: black;*/
@@ -60,7 +73,6 @@ body {
   position: absolute;
   right: 8px;
  /* top: 0;*/
-  
 }
 
 /* Add a grey background color on mouse-over */
@@ -169,26 +181,25 @@ function share(){
 } 
 /*end share data*/
 
-/* Toggle between showing and hiding menu links when the user clicks on the hamburger menu / bar icon */
-function dropdown() {
-  var menu = document.getElementById("dropdown");
-  if (menu.style.display == "block") {
-    menu.style.display = "none";
-  } else {
-    menu.style.display = "block";
-  }
-}
+
 /* menu*/
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("dropdown").classList.toggle("show");
+ /* Toggle between showing and hiding menu links when the user clicks on the hamburger menu / bar icon */
+function dropdown() {
+  // document.getElementById("dropdown").classList.toggle("show");
+  var dropdown = document.getElementById("dropdown");
+  if (dropdown.style.display == "block") {
+      dropdown.style.display = "none";
+  } else {
+      dropdown.style.display = "block";
+  }
 }
   // Close the dropdown if the user clicks outside of it
 window.onclick = function(e) {
   if (!e.target.matches('dropdown-button')) {
   var dropdown = document.getElementById("dropdown");
-    if (dropdown.classList.contains('show')) {
+  if (dropdown.classList.contains('show')) {
       dropdown.classList.remove('show');
     }
   }
