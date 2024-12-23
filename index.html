@@ -185,7 +185,6 @@ toggle between hiding and showing the dropdown content */
 function dropdown() {
   // document.getElementById("dropdown").classList.toggle("show");
   var el = document.getElementById("dropdown");
- alert(el.style);
   if (el.style.display == "block")
       el.style.display = "none";
    else 
@@ -197,6 +196,7 @@ function dropdown() {
  */
 }
   // Close the dropdown if the user clicks outside of it
+ /*
 window.onclick = function(e) {
   if (e.target.matches('dropdown') || e.target.matches('dropdown')) return;
   var el = document.getElementById("dropdown");
@@ -204,10 +204,11 @@ window.onclick = function(e) {
   if (el.style.display == "block") 
  {
       alert("1234455");
-      dropdown(); /*для закрытия меню имитирукм нажатие кнопки*/
+      dropdown(); //для закрытия меню имитирукм нажатие кнопки
       
  }
 }
+ */
 /*end menu*/
 </script>
 </head> 
