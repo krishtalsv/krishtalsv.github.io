@@ -3,13 +3,12 @@
 <html lang="ru">
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <!-- название страницы -->
   <title>skws.ru</title>
+   <!-- иконка страницы -->
   <link rel="icon" href="favicon.png">
-<!-- для смартфонов --> 
+   <!-- для смартфонов, растягивание на всю ширину экрана --> 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- чтобы страница при обновлении не кэшировалась браузером 
-  <meta http-equiv="Cache-control" content="no-cache" > 
-  --> 
 <style>
 
 body {
@@ -20,21 +19,19 @@ body {
  /*padding: 12px 4px;*/
  font-family: "arial";
  text-decoration: none; 
- border: 1px solid gray;
+ border: 1px solid gray; /*рамка вокруг страницы на широком компьютере страница красивее*/
  /*background-color: yellow;*/
 }
-/* nav bar */
+/* nav bar строка заголовка */
 .nav {
   /*overflow: hidden;*/
- /* background-color: #333;*//*приятный серый*//*цвет фона меню*/
  /* position: relative;*/
-   /* background-color: #04AA6D;*//*приятный зеленый*/
- /* color: white;*/
-   height:48px;
+  height:48px;
   background-color: #333;/*увет фона полосы заголовка */
+  /* background-color: #333;*//*приятный серый*//*цвет фона меню*/
  /* color: red;*//*цвет текста полосы заголовка*/
 }
-/* Style nav links */
+/* Style nav links разделы заголовка*/
 .nav a {
   float: left;
   display: block;
@@ -44,14 +41,14 @@ body {
   color: white;
 }
 /* Style the nav-bar logo(SKW)(or home/logo) */
-.nav a.nav-logo{
+.nav a.nav-logo{ /*иконка слева заголовка*/
 }
-/* Style the nav-bar title */
+/* Style the nav-bar title середина заголовка */
 .nav a.nav-title{
  font-size: 20px;  
  font-weight: bold;
 }
-/* Style the menu button */
+/* Style the menu button кнопка меню заголовка*/
 .dropdown-button {
  content: url(menu1.png); 
  /*
@@ -60,7 +57,6 @@ body {
   font-size: 16px;  
   border: none;
   outline: none;
-  color: white;
   background-color: green;
  */
 }
@@ -108,7 +104,6 @@ body {
 .navbar a:hover, .dropbtn, .dropbtn:focus {
   background-color: red;
 }
-
 /*end popup menu*/
  
 .content{

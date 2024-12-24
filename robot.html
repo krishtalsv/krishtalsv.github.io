@@ -2,11 +2,7 @@
 <html>
 <head>
 <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-<link rel="icon" href="favicon.ico">
-<!-- чтобы страница не кэшировалась браузером -->  
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />  
+<link rel="icon" href="robot.png">
 <!-- для смартфонов -->    
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,11 +10,15 @@
 <style>
 
 body { 
-  //font face:"Courier"; 
   font: 12pt sans-serif;  
-  max-width: 700px;//чтобы на компе не расширялось
+  max-width: 700px; /*чтобы на компе не расширялось*/
 }
-  
+  button
+{
+ height:48px;
+ min-width: 48px;
+ /*border:none;*/
+}
   /*stroke-width:0;*/
   /*stroke:black;*/
   
@@ -27,7 +27,7 @@ body {
 
 <body onload ="init()">
   
-<script type="text/javascript">
+<script>
 function log(str){ console.log(str);} 
  //геометрия 
 const M=70;
@@ -93,11 +93,10 @@ class Men
          cm.Fma(Fsumx,Fsumy); 
        }
     calcE(){//энергия человека
-      this.Ex=cm.vx*cm.vx*M; //кинет.движение
-      this.Ey=cm.vy*cm.vy*M;
-      legl.calcEk();
-      this.Ex+=legl.Ex;
-      this.Ey+=legl.Ey;   
+      this.Ex=cm.vx*M; //кинет.движение
+      this.Ey=cm.vy*M;
+    //  this.Ex+=legl.Ex;
+    //  this.Ey+=legl.Ey;   
     }
 
     Etarget(x,y)
@@ -170,21 +169,18 @@ class Muscle {
   signalE( E ) // сигнал мышце напрячся
   {
     this.E+=E;
-    return;
-  }  
-  
-  calcEk()
-  {  
-     //запасенная энергия мышцы
-      var E= this.E;
+    //запасенная энергия мышцы
+    var E= this.E;
     // кинетическая энергия это возможная энергия
     // которую можно преобразовать в скорость
     //на расправленных ногах и без опоры ноль
     //нет на расправленных ногах можно энергию гасить если падаем
-      E = (this.max-this.l)*(this.max-this.l)*E;//длина*сахар
+    // даже на согнутых ногах мы можем как расправить ноги так и резко их согнуть
+      E = (this.max-this.l)*E;//длина*сахар
       this.Ex=Math.round(E*this.sin);
       this.Ey=Math.round(E*this.cos);      
   }  
+  
 }  
   
 class Leg extends Muscle {
@@ -387,17 +383,18 @@ function init()
     ll2 = document.getElementById("ll2");
     b = document.getElementById("body");
     
-     Y00=document.getElementById("earth").getAttribute("y1");
- inf = document.getElementById("inf")//
- inf1 = document.getElementById("inf1")//
- ///
+    Y00=document.getElementById("earth").getAttribute("y1");
+    inf = document.getElementById("inf")//
+    inf1 = document.getElementById("inf1")//
+ //
   reset(); play();
  }
 
 </script>
   
- <div>skw(c) ver 2.0 </div>  
- <svg width="100%" height="100%" viewPort="0 0 320 280" viewBox="-10 0 320 280" border="solid 1px;stroke-width:1">
+ <div>skw(c) ver 2.0 <img width='16' src="robot.png" alt=""> </div>
+</div>  
+ <svg width="100%" height="100%" viewPort="0 0 320 280" viewBox="-10 0 320 280" style="border:solid 1px;stroke-width:1;">
  <!-- поворачиваем ось у -->
  <g transform="matrix(1 0 0 -1 0 280)">
    
@@ -453,8 +450,8 @@ function init()
 
   <div id="inf">inf</div>  
   <div id="inf1">inf1</div> 
-   <button style="height:42px;" onclick="play()">START/STOP</button>
-   <button style="height:42px;" onclick="reset()">RESET</button>
+   <button onclick="play()">START/STOP</button>
+   <button onclick="reset()">RESET</button>
  <!--
   <div> <img id="logo" src="small.gif" onclick="alert('КОНЕЧНАЯ ЦЕЛЬ :-)')" alt="robot.gif" /> </div>
  -->
