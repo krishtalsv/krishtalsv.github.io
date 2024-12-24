@@ -21,7 +21,6 @@ body {
  font-family: "arial";
  text-decoration: none; 
  border: 1px solid gray;
- overflow: hidden; /*чтобы width:100% не растягивался*/
  /*background-color: yellow;*/
 }
 /* nav bar */
@@ -77,9 +76,11 @@ body {
   width: 100%;
   min-width: 128px;
   z-index: 1;
+  overflow: hidden; /*чтобы width:100% не растягивался*/
  background-color: #eee;
   /* background-color: #999;*/
  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+ 
 }
  
 .dropdown a {
